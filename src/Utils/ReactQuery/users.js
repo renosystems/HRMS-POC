@@ -1,8 +1,8 @@
-import { useFetch } from "./Fetcher";
+import { useFetch, useLoadMore } from "./Fetcher";
 import { apiRoutes } from "../Api/Api";
 
 export const useGetUsers = () => {
-  const context = useFetch(apiRoutes.getUsers, undefined, {});
+  const context = useLoadMore(apiRoutes.getUsers);
   return { ...context, data: context.data?.users };
 };
 
