@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "../../Utils/Auth/AuthProvider";
+import checkSessionTimeout from "../../Utils/Auth/CheckSessionTimeout";
 
 function Login() {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ function Login() {
     login(userData);
   };
 
-  if (user) {
+  if (user || !checkSessionTimeout()) {
     // If the user is already logged in, redirect to the original route
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from} replace={true} />;

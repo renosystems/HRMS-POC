@@ -2,11 +2,12 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import AuthenticatedLayout from "../../Components/Layout/AuthenticatedLayout/AuthenticatedLayout";
 import { useAuth } from "./AuthProvider";
+import checkSessionTimeout from "./CheckSessionTimeout";
 
-function PrivateRoute({ element, ...rest }) {
+function PrivateRoute() {
   const { user } = useAuth();
 
-  if (!user) {
+  if (!user && checkSessionTimeout()) {
     return <Navigate to="/login" replace />;
   }
 
