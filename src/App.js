@@ -4,11 +4,12 @@ import Login from "./Pages/Login";
 import Dashboard from "./Pages/Dashboard";
 import CreateForm from "./Pages/CreateForm";
 import DataManagement from "./Pages/DataManagement";
-import Departments from "./Pages/DataManagement";
+import Departments from "./Pages/Departments";
 import Form from "./Pages/Form";
 import FormFields from "./Pages/FormFields";
 import Forms from "./Pages/Forms";
 import Users from "./Pages/Users";
+import Department from "./Pages/Departments/Department";
 
 function App() {
   return (
@@ -20,9 +21,10 @@ function App() {
           <Route path="/createform" element={<CreateForm />} />
           <Route path="/datamanagement" element={<DataManagement />} />
           <Route path="/departments" element={<Departments />} />
-          <Route path="/form" element={<Form />} />
+          <Route path="/departments/:id" element={<Department />} />
           <Route path="/formfields" element={<FormFields />} />
           <Route path="/forms" element={<Forms />} />
+          <Route path="/forms/:id" element={<Form />} />
           <Route path="/users" element={<Users />} />
         </Route>
       </Routes>
