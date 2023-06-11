@@ -1,8 +1,14 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./Utils/Auth/PrivateRoute";
 import Login from "./Pages/Login";
-import Home from "./Pages/Home";
-import Dashboard from "./Pages/Dashboard/Dashboard";
+import Dashboard from "./Pages/Dashboard";
+import CreateForm from "./Pages/CreateForm";
+import DataManagement from "./Pages/DataManagement";
+import Departments from "./Pages/DataManagement";
+import Form from "./Pages/Form";
+import FormFields from "./Pages/FormFields";
+import Forms from "./Pages/Forms";
+import Users from "./Pages/Users";
 
 function App() {
   return (
@@ -10,11 +16,14 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/dashboard"
-            element={<PrivateRoute element={<Dashboard />} />}
-          />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/createform" element={<CreateForm />} />
+          <Route path="/datamanagement" element={<DataManagement />} />
+          <Route path="/departments" element={<Departments />} />
+          <Route path="/form" element={<Form />} />
+          <Route path="/formfields" element={<FormFields />} />
+          <Route path="/forms" element={<Forms />} />
+          <Route path="/users" element={<Users />} />
         </Route>
       </Routes>
     </Router>
