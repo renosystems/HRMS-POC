@@ -3,7 +3,7 @@ import axios from "axios";
 const apiRoutes = {
   getProfile: "/profile",
   getDepartments: "/departments",
-  getDepartment: "/department",
+  getDepartment: "/departments/:id",
   updateDepartment: "/departments/:id",
   getForms: "/forms",
   getForm: "/form",
@@ -34,4 +34,4 @@ const api = {
   delete: (url) => apiClient.delete(url, {}),
 };
 
-export { apiRoutes, api, setAxiosTokenInterceptor, apiClient };
+export { apiRoutes, api, setAxiosTokenInterceptor };

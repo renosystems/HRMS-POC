@@ -9,7 +9,7 @@ import Form from "./Pages/Form";
 import FormFields from "./Pages/FormFields";
 import Forms from "./Pages/Forms";
 import Users from "./Pages/Users";
-import Department from "./Pages/Departments/Department";
+import SingleDepartment from "./Pages/SingleDepartment";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
           <Route path="/createform" element={<CreateForm />} />
           <Route path="/datamanagement" element={<DataManagement />} />
           <Route path="/departments" element={<Departments />} />
-          <Route path="/departments/:id" element={<Department />} />
+          <Route path="/departments/:id" element={<SingleDepartment />} />
           <Route path="/formfields" element={<FormFields />} />
           <Route path="/forms" element={<Forms />} />
           <Route path="/forms/:id" element={<Form />} />

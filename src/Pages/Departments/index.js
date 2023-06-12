@@ -1,9 +1,30 @@
+import { useNavigate } from "react-router-dom";
 import { useGetDepartments } from "../../Services/departments.service";
+import DepartmentCard from "./DepartmentCard/DepartmentCard";
+
 function Departments() {
   const { isFetching, data } = useGetDepartments();
+  const navigate = useNavigate();
 
-  console.log(data);
-  return <div>Departments</div>;
+  const handleOpenDepartment = (id) => {
+    navigate(`/departments/${id}`);
+  };
+
+  return (
+    <div>
+      Departments
+      {isFetching
+        ? "loading..."
+        : data.data.map((dep) => (
+            <DepartmentCard
+              key={dep._id}
+              depName={dep.name}
+              depId={dep._id}
+              handleOpenDepartment={handleOpenDepartment}
+            />
+          ))}
+    </div>
+  );
 }
 
 export default Departments;
