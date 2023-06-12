@@ -12,7 +12,7 @@ const apiRoutes = {
 };
 
 const apiClient = axios.create({
-  baseURL: "/",
+  baseURL: "http://localhost:8080/",
   headers: {
     accept: "application/json",
   },
@@ -27,14 +27,11 @@ const setAxiosTokenInterceptor = async (accessToken) => {
 };
 
 const api = {
-  get: (url, params) =>
-    apiClient.get(url, {
-      ...params,
-    }),
+  get: (url, params) => apiClient.get(url),
   post: (url, data) => apiClient.post(url, data, {}),
   patch: (url, data) => apiClient.patch(url, data, {}),
   put: (url, data) => apiClient.put(url, data, {}),
   delete: (url) => apiClient.delete(url, {}),
 };
 
-export { apiRoutes, api, setAxiosTokenInterceptor };
+export { apiRoutes, api, setAxiosTokenInterceptor, apiClient };

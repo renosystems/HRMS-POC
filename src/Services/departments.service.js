@@ -1,16 +1,21 @@
-import { useFetch } from "./Fetcher";
-import { useDelete, usePatch, usePost, usePut } from "./Mutation";
-import { pathToUrl } from "../pathToUrl";
-import { apiRoutes } from "../Api/Api";
+import { useFetch } from "../Utils/ReactQuery/Fetcher";
+import {
+  useDelete,
+  usePatch,
+  usePost,
+  usePut,
+} from "../Utils/ReactQuery/Mutation";
+import { pathToUrl } from "../Utils/pathToUrl";
+import { apiRoutes } from "../Utils/Api/Api";
 
 export const useGetDepartments = () => {
   const context = useFetch(apiRoutes.getDepartments, undefined, {});
-  return { ...context, data: context.data?.departments };
+  return context;
 };
 
 export const useGetDepartment = (id) => {
   const context = useFetch(pathToUrl(apiRoutes.getDepartment, { id }));
-  return { ...context, data: context.data?.department };
+  return context;
 };
 
 export const usePatchDepartment = (id) =>
