@@ -6,6 +6,8 @@ const apiRoutes = {
   getDepartment: "/department",
   getForms: "/forms",
   getForm: "/form",
+  getFields: "/fields",
+  getField: "/field",
 };
 
 const apiClient = axios.create({
