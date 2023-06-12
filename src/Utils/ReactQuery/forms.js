@@ -1,5 +1,6 @@
 import { useFetch } from "./Fetcher";
 import { apiRoutes } from "../Api/Api";
+import { pathToUrl } from "../pathToUrl";
 
 export const useGetForms = () => {
   const context = useFetch(apiRoutes.getForms, undefined, {});
@@ -7,6 +8,6 @@ export const useGetForms = () => {
 };
 
 export const useGetForm = (id) => {
-  const context = useFetch(apiRoutes.getForm, { id }, {});
+  const context = useFetch(pathToUrl(apiRoutes.getForm, { id }));
   return { ...context, data: context.data?.form };
 };

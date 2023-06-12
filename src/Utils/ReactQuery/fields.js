@@ -1,5 +1,6 @@
 import { useFetch, useLoadMore } from "./Fetcher";
 import { apiRoutes } from "../Api/Api";
+import { pathToUrl } from "../pathToUrl";
 
 export const useGetFields = () => {
   const context = useLoadMore(apiRoutes.getFields);
@@ -7,6 +8,6 @@ export const useGetFields = () => {
 };
 
 export const useGetField = (id) => {
-  const context = useFetch(apiRoutes.getField, { id }, {});
+  const context = useFetch(pathToUrl(apiRoutes.getField, { id }));
   return { ...context, data: context.data?.field };
 };

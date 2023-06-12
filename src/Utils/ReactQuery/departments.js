@@ -9,7 +9,7 @@ export const useGetDepartments = () => {
 };
 
 export const useGetDepartment = (id) => {
-  const context = useFetch(apiRoutes.getDepartment, { id }, {});
+  const context = useFetch(pathToUrl(apiRoutes.getDepartment, { id }));
   return { ...context, data: context.data?.department };
 };
 
