@@ -22,13 +22,13 @@ const useGenericMutation = (func, url, params, updater) => {
 
     onSettled: () => {
       queryClient.invalidateQueries([url, params]);
-      updater();
+      if (updater) updater();
     },
   });
 };
 
 const useDelete = (url, params, updater) => {
-  return useGenericMutation((id) => api.delete(url), url, params, updater);
+  return useGenericMutation(() => api.delete(url), url, params, updater);
 };
 
 const usePost = (url, params, updater) => {

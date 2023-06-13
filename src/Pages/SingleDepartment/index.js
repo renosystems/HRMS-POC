@@ -1,14 +1,19 @@
+import { useParams, useNavigate } from "react-router-dom";
+import DepartmentForm from "../../Components/DepartmentForm";
 import {
   useGetDepartment,
   usePatchDepartment,
+  useDeleteDepartment,
 } from "../../Services/departments.service";
-import { useParams } from "react-router-dom";
 
 function SingleDepartment() {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const { isFetching, data } = useGetDepartment(id);
   const mutation = usePatchDepartment(id);
+  const deleteMutation = useDeleteDepartment(id, () =>
+    navigate("/departments")
+  );
 
   return (
     <div>
@@ -17,11 +22,12 @@ function SingleDepartment() {
         "...loading"
       ) : (
         <div>
-          name: {data?.data?.name}
-          <br />
-          <button onClick={() => mutation.mutate({ name: "new dep3" })}>
-            update
-          </button>
+          <DepartmentForm
+            values={{ name: data?.data?.name }}
+            action={(newValues) => mutation.mutate(newValues)}
+            submitText="Update"
+          />
+          <button onClick={() => deleteMutation.mutate()}>delete</button>
         </div>
       )}
     </div>

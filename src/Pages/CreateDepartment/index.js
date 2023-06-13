@@ -1,21 +1,18 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DepartmentForm from "../../Components/DepartmentForm";
 import { usePostDepartment } from "../../Services/departments.service";
 
 function CreateDepartment() {
-  const [name, setName] = useState("");
   const mutation = usePostDepartment(() => navigate("/departments"));
   const navigate = useNavigate();
 
   return (
     <div>
-      <input
-        name="name"
-        id="depName"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+      <DepartmentForm
+        values={{ name: "" }}
+        action={(newValues) => mutation.mutate(newValues)}
+        submitText="Save"
       />
-      <button onClick={() => mutation.mutate({ name: name })}>Save</button>
     </div>
   );
 }
