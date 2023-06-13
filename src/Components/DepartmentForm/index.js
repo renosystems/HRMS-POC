@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+/**
+ * @param {Object} values initial form values
+ * @param {Object} action submit form action
+ * @param {String} submitText submit btn text
+ * @returns
+ */
 function DepartmentForm({ values, action, submitText }) {
   const [name, setName] = useState(values.name);
 
