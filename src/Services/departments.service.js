@@ -24,7 +24,8 @@ export const usePatchDepartment = (id) =>
 export const useDeleteDepartment = (id) =>
   useDelete(pathToUrl(apiRoutes.updateDepartment, { id }));
 
-export const usePostDepartment = () => usePost(apiRoutes.updateDepartment);
+export const usePostDepartment = (updater) =>
+  usePost(apiRoutes.addDepartment, {}, updater);
 
 export const usePutDepartment = (id) =>
   usePut(pathToUrl(apiRoutes.updateDepartment, { id }));

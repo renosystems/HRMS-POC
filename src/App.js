@@ -10,6 +10,7 @@ import FormFields from "./Pages/FormFields";
 import Forms from "./Pages/Forms";
 import Users from "./Pages/Users";
 import SingleDepartment from "./Pages/SingleDepartment";
+import CreateDepartment from "./Pages/CreateDepartment";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/datamanagement" element={<DataManagement />} />
           <Route path="/departments" element={<Departments />} />
           <Route path="/departments/:id" element={<SingleDepartment />} />
+          <Route path="/departments/create" element={<CreateDepartment />} />
           <Route path="/formfields" element={<FormFields />} />
           <Route path="/forms" element={<Forms />} />
           <Route path="/forms/:id" element={<Form />} />

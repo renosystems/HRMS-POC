@@ -13,6 +13,11 @@ function Departments() {
   return (
     <div>
       Departments
+      <br />
+      <button onClick={() => navigate("/departments/create")}>
+        Add new Department
+      </button>
+      <br />
       {isFetching
         ? "loading..."
         : data.data.map((dep) => (

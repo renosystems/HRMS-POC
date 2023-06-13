@@ -5,6 +5,7 @@ const apiRoutes = {
   getDepartments: "/departments",
   getDepartment: "/departments/:id",
   updateDepartment: "/departments/:id",
+  addDepartment: "/departments",
   getForms: "/forms",
   getForm: "/form",
   getFields: "/fields",

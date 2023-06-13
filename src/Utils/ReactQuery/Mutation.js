@@ -22,6 +22,7 @@ const useGenericMutation = (func, url, params, updater) => {
 
     onSettled: () => {
       queryClient.invalidateQueries([url, params]);
+      updater();
     },
   });
 };
