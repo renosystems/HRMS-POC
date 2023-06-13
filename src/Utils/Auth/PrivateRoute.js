@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import AuthenticatedLayout from "../../Components/Layout/AuthenticatedLayout/AuthenticatedLayout";
+import AuthenticatedLayout from "../../UI-Components/Layout/AuthenticatedLayout/AuthenticatedLayout";
 import { useAuth } from "./AuthProvider";
 import checkSessionTimeout from "./CheckSessionTimeout";
 
