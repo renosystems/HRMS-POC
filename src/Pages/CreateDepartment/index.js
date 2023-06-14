@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import DepartmentForm from "../../Components/DepartmentForm";
+import DepartmentForm from "../../UI-Components/DepartmentForm";
 import { usePostDepartment } from "../../Services/departments.service";
 
 function CreateDepartment() {
