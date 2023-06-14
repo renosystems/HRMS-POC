@@ -27,6 +27,7 @@ function Header({ logout, isLoading, switchLang }) {
       </Heading>
       <Pane>
         <Button
+          appearance="main"
           onClick={logout}
           isLoading={isLoading}
           style={{ marginInlineEnd: "10px" }}
