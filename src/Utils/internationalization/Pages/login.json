@@ -3,6 +3,12 @@
     "login.title": "Login",
     "login.username": "Username",
     "login.password": "Password",
-    "login.button": "Login"
+    "login.loginBtnText": "Login"
+  },
+  "ar": {
+    "login.title": "تسجيل الدخول",
+    "login.username": "اسم المستخدم",
+    "login.password": "كلمه المرور",
+    "login.loginBtnText": "تسجيل الدخول"
   }
 }

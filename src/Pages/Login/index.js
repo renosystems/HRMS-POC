@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Text, Pane, TextInput, Button } from "evergreen-ui";
 import { useTranslation } from "react-i18next";
 import { useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "../../Utils/Auth/AuthProvider";
@@ -24,25 +25,54 @@ function Login() {
   }
 
   return (
-    <div>
-      <h2>{t("login.title")}</h2>
-      <label>{t("login.username")}:</label>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <label>{t("login.password")}:</label>
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin} disabled={isLoading}>
-        {isLoading ? "Loading..." : t("login.button")}
-      </button>
+    <Pane
+      width="100%"
+      height="100vh"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Text
+        color="blue700"
+        paddingBottom="30px"
+        fontSize="2rem"
+        fontWeight="700"
+      >
+        {t("login.title")}
+      </Text>
+      <Pane width="30%" display="flex" flexDirection="column">
+        <TextInput
+          onChange={(e) => setUsername(e.target.value)}
+          value={username}
+          name="username"
+          placeholder={t("login.username")}
+          marginBottom="15px"
+          width="100%"
+        />
+        <TextInput
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          name="password"
+          placeholder={t("login.password")}
+          marginBottom="20px"
+          width="100%"
+        />
+        <Button
+          onClick={handleLogin}
+          isLoading={isLoading}
+          appearance="primary"
+          backgroundColor="#1F3D99"
+          color="white"
+          width="100%"
+        >
+          {t("login.loginBtnText")}
+        </Button>
+      </Pane>
+
       {isError && <div>Error occurred during login.</div>}
-    </div>
+    </Pane>
   );
 }
 

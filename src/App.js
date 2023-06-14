@@ -11,6 +11,7 @@ import Forms from "./Pages/Forms";
 import Users from "./Pages/Users";
 import SingleDepartment from "./Pages/SingleDepartment";
 import CreateDepartment from "./Pages/CreateDepartment";
+import "./App.css";
 
 function App() {
   return (
