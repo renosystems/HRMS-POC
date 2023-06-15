@@ -1,7 +1,9 @@
+import configData from "../../config.json";
+
 export async function login(username, password) {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const expiration = Date.now() + 60 * 60 * 1000; // Current time + 1 hour
+  const expiration = Date.now() + configData.AUTH.SESSION_DURATION; // Current time + 1 hour
   localStorage.setItem("HRMSSessionExpiry", expiration);
 
   return {
