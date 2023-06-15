@@ -28,14 +28,14 @@ i18n.use(initReactI18next).init({
   },
 });
 
-const switchLanguage = () => {
-  if (i18n.language === "en") {
-    i18n.changeLanguage("ar");
+const switchLanguage = (lang) => {
+  if (lang === "ar") {
     document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
   } else {
-    i18n.changeLanguage("en");
     document.getElementsByTagName("html")[0].setAttribute("dir", "ltr");
   }
+
+  i18n.changeLanguage(lang);
 };
 
 const getCurrentLang = () => i18n.language;

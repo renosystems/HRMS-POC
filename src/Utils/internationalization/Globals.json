@@ -1,11 +1,9 @@
 {
   "en": {
-    "LANG_BTN_TEXT": "ع",
     "LOGOUT": "Logout",
     "COPYRIGHT": "Reno.systems"
   },
   "ar": {
-    "LANG_BTN_TEXT": "EN",
     "LOGOUT": "تسجيل الخروج",
     "COPYRIGHT": "رينو سيستيم"
   }

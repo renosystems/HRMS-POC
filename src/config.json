@@ -4,5 +4,12 @@
   },
   "THEMES": {
     "DEFAULT": "default"
+  },
+  "LANGUAGES": {
+    "DEFAULT": { "CODE": "en", "FLAG": "gb-eng", "NAME": "English" },
+    "LIST": [
+      { "CODE": "en", "FLAG": "gb-eng", "NAME": "English" },
+      { "CODE": "ar", "FLAG": "sa", "NAME": "العربيه" }
+    ]
   }
 }

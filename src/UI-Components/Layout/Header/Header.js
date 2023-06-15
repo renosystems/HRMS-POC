@@ -1,14 +1,16 @@
 import React from "react";
-import { Pane, Heading, Button } from "evergreen-ui";
+import { Pane, Heading, Button, SelectMenu } from "evergreen-ui";
 import { useTranslation } from "react-i18next";
+import configData from "../../../config.json";
 
 /**
  * @param {Object} logout logout fn
  * @param {Boolean} isLoading loading state indicator
  * @param {Object} switchLang switch language fn
+ * @param {String} lang current selected language
  * @returns
  */
-function Header({ logout, isLoading, switchLang }) {
+function Header({ logout, isLoading, switchLang, lang }) {
   const { t } = useTranslation();
 
   return (
@@ -34,7 +36,26 @@ function Header({ logout, isLoading, switchLang }) {
         >
           {t("LOGOUT")}
         </Button>
-        <Button onClick={switchLang}>{t("LANG_BTN_TEXT")}</Button>
+
+        <SelectMenu
+          hasFilter={false}
+          hasTitle={false}
+          closeOnSelect={true}
+          selected={lang.value}
+          onSelect={(item) => switchLang(item)}
+          options={configData.LANGUAGES.LIST.map((lang) => ({
+            label: lang.NAME,
+            value: lang.CODE,
+            icon: `${process.env.PUBLIC_URL}/Icons/Flags/${lang.FLAG}.svg`,
+          }))}
+        >
+          <Button>
+            <Pane style={{ marginInlineEnd: "5px" }}>
+              <img width="20" alt={`${lang.label}-flag`} src={lang.icon} />
+            </Pane>
+            {lang.label}
+          </Button>
+        </SelectMenu>
       </Pane>
     </Pane>
   );
