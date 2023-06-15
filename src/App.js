@@ -20,12 +20,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/createform" element={<CreateForm />} />
-          <Route path="/datamanagement" element={<DataManagement />} />
+          <Route path="/create-form" element={<CreateForm />} />
+          <Route path="/data-management" element={<DataManagement />} />
           <Route path="/departments" element={<Departments />} />
           <Route path="/departments/:id" element={<SingleDepartment />} />
           <Route path="/departments/create" element={<CreateDepartment />} />
-          <Route path="/formfields" element={<FormFields />} />
+          <Route path="/form-fields" element={<FormFields />} />
           <Route path="/forms" element={<Forms />} />
           <Route path="/forms/:id" element={<Form />} />
           <Route path="/users" element={<Users />} />
