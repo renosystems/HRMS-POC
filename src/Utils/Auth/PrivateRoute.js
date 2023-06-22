@@ -5,11 +5,11 @@ import { useAuth } from "./AuthProvider";
 import checkSessionTimeout from "./CheckSessionTimeout";
 
 function PrivateRoute() {
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
-  if (!user && checkSessionTimeout()) {
-    return <Navigate to="/login" replace />;
-  }
+  // if (!user && checkSessionTimeout()) {
+  //   return <Navigate to="/login" replace />;
+  // }
 
   return (
     <AuthenticatedLayout>

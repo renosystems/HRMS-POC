@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useGetDepartments } from "../../Services/departments.service";
+import { useGetDepartmentsQuery } from "../../Utils/RTK/slices/api.slice";
 import DepartmentCard from "./DepartmentCard/DepartmentCard";
 
 function Departments() {
-  const { isFetching, data } = useGetDepartments();
+  const { data, isLoading, isSuccess, isError, error } =
+    useGetDepartmentsQuery();
+
   const navigate = useNavigate();
 
   const handleOpenDepartment = (id) => {
@@ -18,16 +20,20 @@ function Departments() {
         Add new Department
       </button>
       <br />
-      {isFetching
-        ? "loading..."
-        : data.data.map((dep) => (
-            <DepartmentCard
-              key={dep._id}
-              depName={dep.name}
-              depId={dep._id}
-              handleOpenDepartment={handleOpenDepartment}
-            />
-          ))}
+      {isLoading ? (
+        "loading..."
+      ) : isSuccess ? (
+        data.data.map((dep) => (
+          <DepartmentCard
+            key={dep._id}
+            depName={dep.name}
+            depId={dep._id}
+            handleOpenDepartment={handleOpenDepartment}
+          />
+        ))
+      ) : isError ? (
+        <div>{error.toString()}</div>
+      ) : null}
     </div>
   );
 }
