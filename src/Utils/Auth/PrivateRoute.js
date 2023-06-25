@@ -1,15 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import AuthenticatedLayout from "../../UI-Components/Layout/AuthenticatedLayout/AuthenticatedLayout";
-import { useAuth } from "./AuthProvider";
-import checkSessionTimeout from "./CheckSessionTimeout";
 
 function PrivateRoute() {
-  // const { user } = useAuth();
+  const { authenticated } = useSelector((state) => state.auth);
 
-  // if (!user && checkSessionTimeout()) {
-  //   return <Navigate to="/login" replace />;
-  // }
+  if (!authenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <AuthenticatedLayout>

@@ -1,24 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, Pane, TextInput, Button } from "evergreen-ui";
 import { useTranslation } from "react-i18next";
 import { useLocation, Navigate } from "react-router-dom";
-import { useAuth } from "../../Utils/Auth/AuthProvider";
-import checkSessionTimeout from "../../Utils/Auth/CheckSessionTimeout";
+import { useSelector, useDispatch } from "react-redux";
+import { checkCach, login } from "../../Utils/RTK/slices/auth.slice";
 
 function Login() {
   const { t } = useTranslation();
   const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading, isError, user } = useAuth();
+  const { authenticated, status, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     // Perform login logic and call the login function from the AuthProvider
     const userData = { username, password };
-    login(userData);
+    dispatch(login(userData));
   };
 
-  if (user || !checkSessionTimeout()) {
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(checkCach());
+    }
+  }, [dispatch, status]);
+
+  if (authenticated) {
     // If the user is already logged in, redirect to the original route
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from} replace={true} />;
@@ -61,7 +68,7 @@ function Login() {
         />
         <Button
           onClick={handleLogin}
-          isLoading={isLoading}
+          isLoading={status === "loading"}
           appearance="primary"
           backgroundColor="#1F3D99"
           color="white"
@@ -71,7 +78,7 @@ function Login() {
         </Button>
       </Pane>
 
-      {isError && <div>Error occurred during login.</div>}
+      {error && <div>Error occurred during login.</div>}
     </Pane>
   );
 }
