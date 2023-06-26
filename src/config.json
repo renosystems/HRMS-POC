@@ -11,5 +11,8 @@
       { "CODE": "en", "FLAG": "gb-eng", "NAME": "English" },
       { "CODE": "ar", "FLAG": "sa", "NAME": "العربيه" }
     ]
+  },
+  "API": {
+    "BASE_URL": "http://localhost:8080/"
   }
 }
