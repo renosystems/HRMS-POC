@@ -6,22 +6,50 @@ const DefaultTheme = mergeTheme(defaultTheme, {
       appearances: {
         main: {
           color: "white",
-          paddingX: 12,
-          paddingY: 8,
+          paddingY: 25,
           borderRadius: 5,
-          backgroundColor: "indianred",
+          backgroundColor: "grey",
           selectors: {
             _hover: {
-              backgroundColor: "firebrick",
+              backgroundColor: "grey",
             },
             _active: {
-              backgroundColor: "darkred",
+              backgroundColor: "grey",
             },
             _focus: {
-              boxShadow: "0 0 0 2px lightcoral",
+              boxShadow: "0 0 0 2px grey",
             },
           },
         },
+      },
+    },
+
+    Input: {
+      baseStyle: {
+        backgroundColor: "grey",
+        borderColor: "black",
+      },
+    },
+
+    Checkbox: {
+      baseStyle: {
+        backgroundColor: "grey",
+        borderColor: "black",
+        selectors: {
+          _focus: {
+            boxShadow: "0 0 0 2px grey",
+          },
+          _checked: {
+            backgroundColor: "grey !important",
+          },
+        },
+      },
+    },
+
+    Label: {
+      baseStyle: {
+        color: "grey",
+        fontWeight: "900",
       },
     },
   },
@@ -33,19 +61,18 @@ const SecondaryTheme = mergeTheme(defaultTheme, {
       appearances: {
         main: {
           color: "white",
-          paddingX: 12,
-          paddingY: 8,
+          paddingY: 25,
           borderRadius: 5,
-          backgroundColor: "blue",
+          backgroundColor: "grey",
           selectors: {
             _hover: {
-              backgroundColor: "blue",
+              backgroundColor: "grey",
             },
             _active: {
-              backgroundColor: "blue",
+              backgroundColor: "grey",
             },
             _focus: {
-              boxShadow: "0 0 0 2px blue",
+              boxShadow: "0 0 0 2px grey",
             },
           },
         },

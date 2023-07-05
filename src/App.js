@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./Utils/Auth/PrivateRoute";
+import SystemConfiguration from "./Pages/SystemConfiguration";
 import Login from "./Pages/Login";
 import Dashboard from "./Pages/Dashboard";
 import CreateForm from "./Pages/CreateForm";
@@ -19,6 +20,10 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
+          <Route
+            path="/system-configuration"
+            element={<SystemConfiguration />}
+          />
           <Route path="/" element={<Dashboard />} />
           <Route path="/create-form" element={<CreateForm />} />
           <Route path="/data-management" element={<DataManagement />} />
