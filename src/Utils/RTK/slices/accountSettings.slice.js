@@ -23,6 +23,7 @@ export const getAccountSettings = createAsyncThunk(
     } else {
       const initialaccountSettings = {
         rwf: "jobPostingSystem",
+        hasApprovalCycle: true,
         approvalCycle: "both",
         applicantForm: "basic",
         ceo: {},
