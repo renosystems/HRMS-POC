@@ -52,6 +52,30 @@ const DefaultTheme = mergeTheme(defaultTheme, {
         fontWeight: "900",
       },
     },
+
+    Heading: {
+      baseStyle: {
+        color: "grey",
+        fontWeight: "900",
+      },
+    },
+
+    Radio: {
+      baseStyle: {
+        border: "1px solid grey",
+        padding: "20px",
+        selectors: {
+          _checked: {
+            backgroundColor: "grey !important",
+            border: "1px solid grey !important",
+          },
+          _hover: {
+            backgroundColor: "grey !important",
+            border: "1px solid grey !important",
+          },
+        },
+      },
+    },
   },
 });
 
