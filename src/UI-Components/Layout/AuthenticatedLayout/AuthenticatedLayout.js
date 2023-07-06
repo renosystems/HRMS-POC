@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { TabNavigation, Tab } from "evergreen-ui";
+// import { TabNavigation, Tab } from "evergreen-ui";
 import configData from "../../../config.json";
 import { switchLanguage } from "../../../Utils/internationalization/i18n";
 import Footer from "../Footer/Footer";
@@ -8,7 +8,7 @@ import Header from "../Header/Header";
 import { logout } from "../../../Utils/RTK/slices/auth.slice";
 
 function AuthenticatedLayout({ children }) {
-  const [selectedTab, setSelectedTab] = useState(1);
+  // const [selectedTab, setSelectedTab] = useState(1);
   const dispatch = useDispatch();
   const [lang, setLang] = useState({
     label: configData.LANGUAGES.DEFAULT.NAME,
@@ -29,7 +29,7 @@ function AuthenticatedLayout({ children }) {
         switchLang={handleSwitchLanguage}
         lang={lang}
       />
-      <TabNavigation>
+      {/* <TabNavigation>
         {[
           { id: 1, name: "Employees & departments", route: "/departments" },
         ].map((tab) => {
@@ -43,7 +43,7 @@ function AuthenticatedLayout({ children }) {
             </Tab>
           );
         })}
-      </TabNavigation>
+      </TabNavigation> */}
       {children}
       <Footer />
     </>
