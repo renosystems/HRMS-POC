@@ -46,9 +46,11 @@ export const updateConfiguration = createAsyncThunk(
 
     const config = JSON.parse(localStorage.getItem("config"));
 
-    config[stepId].completed = true;
+    config.steps[stepId].completed = true;
 
-    if (config[stepId].last) config.completed = true;
+    if (config.steps[stepId].last) config.completed = true;
+
+    localStorage.setItem("config", JSON.stringify({ ...config }));
 
     return { ...config };
   }
