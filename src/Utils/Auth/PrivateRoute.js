@@ -12,7 +12,12 @@ function PrivateRoute() {
     return <Navigate to="/login" replace />;
   }
 
-  if (pathname === "/system-configuration") return <Outlet />;
+  if (pathname === "/system-configuration")
+    return (
+      <AuthenticatedLayout>
+        <Outlet />
+      </AuthenticatedLayout>
+    );
 
   return (
     <ConfigurationCheck>

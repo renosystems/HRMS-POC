@@ -17,7 +17,7 @@ function Header({ logout, isLoading, switchLang, lang }) {
     <Pane
       is="header"
       display="flex"
-      background="blue700"
+      background="gray300"
       paddingY={12}
       paddingX={40}
       width="100%"
