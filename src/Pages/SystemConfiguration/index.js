@@ -21,6 +21,7 @@ function SystemConfiguration() {
   const { status, settings } = useSelector((state) => state.accountSettings);
   const [currentStep, setCurrentStep] = useState(null);
   const dispatch = useDispatch();
+
   const handleStepBack = useCallback(() => {
     const backIndex = currentStep - 1;
     setCurrentStep(backIndex);
