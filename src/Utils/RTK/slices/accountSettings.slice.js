@@ -51,7 +51,7 @@ export const updateAccountSettings = createAsyncThunk(
 );
 
 const accountSettingsSlice = createSlice({
-  name: "config",
+  name: "accountSettings",
   initialState,
   reducers: {},
 
