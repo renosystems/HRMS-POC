@@ -99,25 +99,12 @@ function SystemConfiguration() {
 
     if (!config.steps.step5.completed || currentStep === 5) {
       if (!currentStep) setCurrentStep(5);
-      return (
-        <Step5
-          stepBackHandler={handleStepBack}
-          settings={settings}
-          nextStep={handleNextSep}
-        />
-      );
+      return <Step5 settings={settings} nextStep={handleNextSep} />;
     }
 
     if (!config.steps.step6.completed || currentStep === 6) {
       if (!currentStep) setCurrentStep(6);
-      return (
-        <Step6
-          stepBackHandler={handleStepBack}
-          settings={settings}
-          stepId="step6"
-          nextStep={handleNextSep}
-        />
-      );
+      return <Step6 settings={settings} nextStep={handleNextSep} />;
     }
   }
 }
