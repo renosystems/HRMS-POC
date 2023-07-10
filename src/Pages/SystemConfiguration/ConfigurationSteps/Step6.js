@@ -152,7 +152,7 @@ function Step6({ nextStep, stepBackHandler }) {
             >
               Back
             </Button>
-            {employees.length && (
+            {employees.length ? (
               <Button
                 onClick={handleNext}
                 appearance="main"
@@ -161,7 +161,7 @@ function Step6({ nextStep, stepBackHandler }) {
               >
                 Skip to departments
               </Button>
-            )}
+            ) : null}
           </Pane>
         </Pane>
       ) : (
