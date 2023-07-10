@@ -27,7 +27,8 @@ export const getConfiguration = createAsyncThunk("config/get", async () => {
         step3: { id: "step3", completed: false, index: 3, last: false },
         step4: { id: "step4", completed: false, index: 4, last: false },
         step5: { id: "step5", completed: false, index: 5, last: false },
-        step6: { id: "step6", completed: false, index: 6, last: true },
+        step6: { id: "step6", completed: false, index: 6, last: false },
+        step7: { id: "step7", completed: false, index: 7, last: true },
       },
     };
     localStorage.setItem("config", JSON.stringify(initialConfig));
