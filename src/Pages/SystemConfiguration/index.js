@@ -106,7 +106,10 @@ function SystemConfiguration() {
     if (!config.steps.step6.completed || currentStep === 6) {
       if (!currentStep) setCurrentStep(6);
       return (
-        <Step6 nextStep={handleNextSep} stepBackHandler={handleStepBack} />
+        <Step6
+          nextStep={() => setCurrentStep(7)}
+          stepBackHandler={handleStepBack}
+        />
       );
     }
 
