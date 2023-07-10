@@ -13,6 +13,7 @@ import Step4 from "./ConfigurationSteps/Step4";
 import Step5 from "./ConfigurationSteps/Step5";
 import Step6 from "./ConfigurationSteps/Step6";
 import Step7 from "./ConfigurationSteps/Step7";
+import { Navigate } from "react-router";
 
 /**
  * @returns component
@@ -60,6 +61,7 @@ function SystemConfiguration() {
       </Pane>
     );
   } else {
+    if (config.completed) return <Navigate to="/" replace={true} />;
     if (!config.steps.step1.completed || currentStep === 1) {
       if (!currentStep) setCurrentStep(1);
       return <Step1 settings={settings} nextStep={handleNextSep} />;
