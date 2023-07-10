@@ -99,7 +99,7 @@ function SystemConfiguration() {
 
     if (!config.steps.step5.completed || currentStep === 5) {
       if (!currentStep) setCurrentStep(5);
-      return <Step5 settings={settings} nextStep={handleNextSep} />;
+      return <Step5 nextStep={() => setCurrentStep(6)} />;
     }
 
     if (!config.steps.step6.completed || currentStep === 6) {
