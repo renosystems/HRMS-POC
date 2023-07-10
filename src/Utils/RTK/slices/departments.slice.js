@@ -65,7 +65,7 @@ const departmentsSlice = createSlice({
 
         const newDepartments = [...state.departments, action.payload];
 
-        localStorage.setItem("employees", JSON.stringify(newDepartments));
+        localStorage.setItem("departments", JSON.stringify(newDepartments));
 
         state.departments = newDepartments;
       })
