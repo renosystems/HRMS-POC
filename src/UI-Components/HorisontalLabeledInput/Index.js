@@ -1,0 +1,39 @@
+import { Label, Pane, TextInputField } from "evergreen-ui";
+
+const HorisontalLabeledInput = ({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  isInvalid,
+  validationMessage,
+  width,
+  type,
+}) => {
+  return (
+    <Pane
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      paddingY="10px"
+      width={width}
+    >
+      <Label>{label}</Label>
+      <TextInputField
+        label=""
+        name={name}
+        value={value}
+        onChange={onChange}
+        isInvalid={isInvalid}
+        validationMessage={validationMessage}
+        placeholder={placeholder}
+        type={type}
+        marginBottom="0px"
+        width="60%"
+      />
+    </Pane>
+  );
+};
+
+export default HorisontalLabeledInput;
