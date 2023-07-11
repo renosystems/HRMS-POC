@@ -6,58 +6,78 @@ import {
   Button,
   PeopleIcon,
   Spinner,
-  FileCard,
-  FileUploader,
-  TextInput,
+  TextInputField,
 } from "evergreen-ui";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as yup from "yup";
+
 import {
   addCeo,
   getEmployees,
 } from "../../../Utils/RTK/slices/employees.slice";
 import { updateConfiguration } from "../../../Utils/RTK/slices/config.slice";
 
+import HorisontalLabeledInput from "../../../UI-Components/HorisontalLabeledInput/Index";
+
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Not a valid email address")
+    .required("This field is required"),
+  name: yup
+    .string()
+    .min(5, "Minimum five characters")
+    .max(15, "Maximam fifteen characters")
+    .required("This field is required"),
+  phoneNumber: yup
+    .string()
+    .matches(
+      /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+      "Phone number is not valid"
+    ),
+  title: yup.string().oneOf(["ceo"], "Wrong title"),
+});
+
 /**
  * @param {Object} nextStep next step handler fn
+ * @param {Number} currentConfigStep current configuration step in BE
  * @returns
  */
-function Step5({ nextStep }) {
+function Step5({ nextStep, currentConfigStep }) {
   const { status, ceo } = useSelector((state) => state.employees);
-  const [name, setName] = useState(ceo ? ceo.name : "");
-  const [email, setEmail] = useState(ceo ? ceo.email : "");
-  const [phoneNumber, setPhoneNumber] = useState(ceo ? ceo.phoneNumber : "");
-
-  const [isSetupClicked, setIsSetupClicked] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [fileRejections, setFileRejections] = useState([]);
-  const handleChange = useCallback((files) => setFiles([files[0]]), []);
-  const handleRejected = useCallback(
-    (fileRejections) => setFileRejections([fileRejections[0]]),
-    []
-  );
-  const handleRemove = useCallback(() => {
-    setFiles([]);
-    setFileRejections([]);
-  }, []);
+  const [touched, setTouched] = useState(false);
 
   const dispatch = useDispatch();
+  const formik = useFormik({
+    initialValues: {
+      email: ceo?.email || "",
+      name: ceo?.name || "",
+      phoneNumber: ceo?.phoneNumber || "",
+      title: ceo?.title || "ceo",
+    },
+    enableReinitialize: true,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      if (touched) {
+        dispatch(addCeo(values));
+        if (currentConfigStep === 5) dispatch(updateConfiguration());
+      }
 
-  const handleNext = useCallback(() => {
-    dispatch(updateConfiguration());
+      nextStep();
+    },
+  });
 
-    dispatch(
-      addCeo({
-        name: name,
-        email: email,
-        phoneNumber: phoneNumber,
-        title: "ceo",
-        department: "Top management",
-      })
-    );
+  const [isSetupClicked, setIsSetupClicked] = useState(false);
 
-    nextStep();
-  }, [dispatch, email, name, nextStep, phoneNumber]);
+  const handleChange = useCallback(
+    (e) => {
+      if (!touched) setTouched(true);
+      formik.handleChange(e);
+    },
+    [formik, touched]
+  );
 
   useEffect(() => {
     if (status === "idle") dispatch(getEmployees());
@@ -126,69 +146,54 @@ function Step5({ nextStep }) {
             management department
           </Text>
 
-          <FileUploader
-            label="Change your profile image"
-            maxSizeInBytes={50 * 1024 ** 2}
-            maxFiles={1}
+          <HorisontalLabeledInput
+            label="Name"
+            name="name"
+            value={formik.values.name}
             onChange={handleChange}
-            onRejected={handleRejected}
-            renderFile={(file) => {
-              const { name, size, type } = file;
-              const fileRejection = fileRejections.find(
-                (fileRejection) => fileRejection.file === file
-              );
-              const { message } = fileRejection || {};
-              return (
-                <FileCard
-                  key={name}
-                  isInvalid={fileRejection != null}
-                  name={name}
-                  onRemove={handleRemove}
-                  sizeInBytes={size}
-                  type={type}
-                  validationMessage={message}
-                />
-              );
-            }}
-            values={files}
-          />
-
-          <TextInput
-            onChange={(e) => setName(e.target.value)}
-            value={name}
+            isInvalid={formik.touched.name && Boolean(formik.errors.name)}
+            validationMessage={formik.touched.name && formik.errors.name}
             placeholder="Name"
+            type="text"
             width="100%"
-            marginBottom="20px"
           />
 
-          <TextInput
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
+          <HorisontalLabeledInput
+            label="E-mail"
+            name="email"
+            value={formik.values.email}
+            onChange={handleChange}
+            isInvalid={formik.touched.email && Boolean(formik.errors.email)}
+            validationMessage={formik.touched.email && formik.errors.email}
             placeholder="email"
             type="email"
             width="100%"
-            marginBottom="20px"
           />
-          <TextInput
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            value={phoneNumber}
-            placeholder="phoneNumber"
+
+          <HorisontalLabeledInput
+            label="Phone Number"
+            name="phoneNumber"
+            value={formik.values.phoneNumber}
+            onChange={handleChange}
+            isInvalid={
+              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+            }
+            validationMessage={
+              formik.touched.phoneNumber && formik.errors.phoneNumber
+            }
+            placeholder="Phone Number"
             width="100%"
-            marginBottom="20px"
           />
-          <TextInput
-            label="title"
-            value="ceo"
+
+          <HorisontalLabeledInput
+            label="Title"
+            name="title"
+            value={formik.values.title}
+            onChange={handleChange}
+            isInvalid={formik.touched.title && Boolean(formik.errors.title)}
+            validationMessage={formik.touched.title && formik.errors.title}
             disabled={true}
             width="100%"
-            marginBottom="20px"
-          />
-          <TextInput
-            label="title"
-            value="Top Management"
-            disabled={true}
-            width="100%"
-            marginBottom="20px"
           />
 
           <Pane
@@ -198,7 +203,8 @@ function Step5({ nextStep }) {
             width="100%"
           >
             <Button
-              onClick={handleNext}
+              onClick={formik.handleSubmit}
+              type="submit"
               appearance="main"
               paddingY="20px"
               paddingX="35px"

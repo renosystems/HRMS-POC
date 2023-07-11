@@ -107,18 +107,29 @@ function SystemConfiguration() {
         );
 
       case 5:
-        return <Step5 nextStep={() => setCurrentStep(6)} />;
+        return (
+          <Step5
+            nextStep={() => setCurrentStep(6)}
+            currentConfigStep={config.currentStep}
+          />
+        );
 
       case 6:
         return (
           <Step6
             nextStep={() => setCurrentStep(7)}
             stepBackHandler={handleStepBack}
+            currentConfigStep={config.currentStep}
           />
         );
 
       case 7:
-        return <Step7 stepBackHandler={handleStepBack} />;
+        return (
+          <Step7
+            stepBackHandler={handleStepBack}
+            currentConfigStep={config.currentStep}
+          />
+        );
 
       default:
         return (
