@@ -1,13 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Pane,
-  Text,
-  Heading,
-  Button,
-  PeopleIcon,
-  Spinner,
-  TextInputField,
-} from "evergreen-ui";
+import { Pane, Text, Heading, Button, PeopleIcon, Spinner } from "evergreen-ui";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
