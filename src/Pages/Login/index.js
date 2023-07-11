@@ -3,21 +3,43 @@ import { Text, Pane, TextInputField, Button, Checkbox } from "evergreen-ui";
 import { useTranslation } from "react-i18next";
 import { useLocation, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import { checkCach, login } from "../../Utils/RTK/slices/auth.slice";
+
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Not a valid email address")
+    .required("This field is required"),
+  password: yup.string().required("This field is required"),
+});
 
 function Login() {
   const { t } = useTranslation();
   const location = useLocation();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [touched, setTouched] = useState(false);
   const [checked, setChecked] = useState(false);
   const { authenticated, status, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const handleLogin = () => {
-    // Perform login logic and call the login function from the AuthProvider
-    const userData = { username: email, password };
-    dispatch(login(userData));
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    enableReinitialize: true,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      const userData = { username: values.email, password: values.password };
+      // Perform login logic and call the login function from the AuthProvider
+      dispatch(login(userData));
+    },
+  });
+
+  const handleChange = (e) => {
+    if (!touched) setTouched(true);
+    formik.handleChange(e);
   };
 
   useEffect(() => {
@@ -62,9 +84,11 @@ function Login() {
         <Pane width="100%" display="flex" flexDirection="column">
           <TextInputField
             label="E-mail"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            name="username"
+            name="email"
+            value={formik.values.email}
+            onChange={handleChange}
+            isInvalid={formik.touched.email && Boolean(formik.errors.email)}
+            validationMessage={formik.touched.email && formik.errors.email}
             placeholder={t("login.username")}
             marginBottom="15px"
             inputWidth="100%"
@@ -73,8 +97,14 @@ function Login() {
           <TextInputField
             label="Password"
             type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            value={formik.values.password}
+            onChange={handleChange}
+            isInvalid={
+              formik.touched.password && Boolean(formik.errors.password)
+            }
+            validationMessage={
+              formik.touched.password && formik.errors.password
+            }
             name="password"
             placeholder={t("login.password")}
             inputWidth="100%"
@@ -89,11 +119,13 @@ function Login() {
           />
 
           <Button
-            onClick={handleLogin}
+            onClick={formik.handleSubmit}
             isLoading={status === "loading"}
+            disabled={!touched}
             appearance="main"
             width="100%"
             marginTop="50px"
+            type="submit"
           >
             {t("login.loginBtnText")}
           </Button>
