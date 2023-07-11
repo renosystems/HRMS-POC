@@ -34,21 +34,25 @@ function SystemConfiguration() {
    * update step status of completion
    * sets current step to the next one
    * @param {Object} newSettings new account settings details
-   * @param {String} stepId step id
+   * @param {String} step step
    * @returns
    */
   const handleNextSep = useCallback(
-    (newSettings, stepId) => {
+    (newSettings, step) => {
       if (newSettings) dispatch(updateAccountSettings(newSettings));
 
-      if (!config.steps[stepId].completed)
-        dispatch(updateConfiguration(stepId));
-
-      const nextIndex = currentStep + 1;
-      setCurrentStep(nextIndex);
+      if (config.currentStep === step) dispatch(updateConfiguration());
+      else {
+        const nextIndex = currentStep + 1;
+        setCurrentStep(nextIndex);
+      }
     },
-    [config.steps, currentStep, dispatch]
+    [config.currentStep, currentStep, dispatch]
   );
+
+  useEffect(() => {
+    setCurrentStep(config.currentStep);
+  }, [config.currentStep]);
 
   useEffect(() => {
     dispatch(getAccountSettings());
@@ -62,64 +66,55 @@ function SystemConfiguration() {
     );
   } else {
     if (config.completed) return <Navigate to="/" replace={true} />;
-    if (!config.steps.step1.completed || currentStep === 1) {
-      if (!currentStep) setCurrentStep(1);
-      return <Step1 settings={settings} nextStep={handleNextSep} />;
-    }
 
-    if (!config.steps.step2.completed || currentStep === 2) {
-      if (!currentStep) setCurrentStep(2);
-      return (
-        <Step2
-          stepBackHandler={handleStepBack}
-          settings={settings}
-          nextStep={handleNextSep}
-        />
-      );
-    }
+    switch (currentStep) {
+      case 1:
+        return <Step1 settings={settings} nextStep={handleNextSep} />;
+      case 2:
+        return (
+          <Step2
+            stepBackHandler={handleStepBack}
+            settings={settings}
+            nextStep={handleNextSep}
+          />
+        );
+      case 3:
+        return (
+          <Step3
+            stepBackHandler={handleStepBack}
+            settings={settings}
+            nextStep={handleNextSep}
+          />
+        );
+      case 4:
+        return (
+          <Step4
+            stepBackHandler={handleStepBack}
+            settings={settings}
+            nextStep={handleNextSep}
+          />
+        );
 
-    if (!config.steps.step3.completed || currentStep === 3) {
-      if (!currentStep) setCurrentStep(3);
-      return (
-        <Step3
-          stepBackHandler={handleStepBack}
-          settings={settings}
-          nextStep={handleNextSep}
-        />
-      );
-    }
+      case 5:
+        return <Step5 nextStep={() => setCurrentStep(6)} />;
 
-    if (!config.steps.step4.completed || currentStep === 4) {
-      if (!currentStep) setCurrentStep(4);
-      return (
-        <Step4
-          stepBackHandler={handleStepBack}
-          settings={settings}
-          nextStep={handleNextSep}
-        />
-      );
-    }
+      case 6:
+        return (
+          <Step6
+            nextStep={() => setCurrentStep(7)}
+            stepBackHandler={handleStepBack}
+          />
+        );
 
-    if (!config.steps.step5.completed || currentStep === 5) {
-      if (!currentStep) setCurrentStep(5);
-      return <Step5 nextStep={() => setCurrentStep(6)} />;
-    }
+      case 7:
+        return <Step7 stepBackHandler={handleStepBack} />;
 
-    if (!config.steps.step6.completed || currentStep === 6) {
-      if (!currentStep) setCurrentStep(6);
-      return (
-        <Step6
-          nextStep={() => setCurrentStep(7)}
-          stepBackHandler={handleStepBack}
-        />
-      );
-    }
-
-    if (!config.steps.step7.completed || currentStep === 7) {
-      if (!currentStep) setCurrentStep(7);
-      return (
-        <Step7 nextStep={handleNextSep} stepBackHandler={handleStepBack} />
-      );
+      default:
+        return (
+          <Pane>
+            <Spinner marginX="auto" marginY={120} />
+          </Pane>
+        );
     }
   }
 }

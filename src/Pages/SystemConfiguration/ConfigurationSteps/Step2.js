@@ -27,7 +27,7 @@ function Step2({ settings, nextStep, stepBackHandler }) {
         }
       : null;
 
-    nextStep(newSettings, "step2");
+    nextStep(newSettings, 2);
   }, [changed, nextStep, settings, value]);
 
   return (

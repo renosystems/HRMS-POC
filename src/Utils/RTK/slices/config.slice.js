@@ -21,15 +21,7 @@ export const getConfiguration = createAsyncThunk("config/get", async () => {
   } else {
     const initialConfig = {
       completed: false,
-      steps: {
-        step1: { id: "step1", completed: false, index: 1, last: false },
-        step2: { id: "step2", completed: false, index: 2, last: false },
-        step3: { id: "step3", completed: false, index: 3, last: false },
-        step4: { id: "step4", completed: false, index: 4, last: false },
-        step5: { id: "step5", completed: false, index: 5, last: false },
-        step6: { id: "step6", completed: false, index: 6, last: false },
-        step7: { id: "step7", completed: false, index: 7, last: true },
-      },
+      currentStep: 1,
     };
     localStorage.setItem("config", JSON.stringify(initialConfig));
     return initialConfig;
@@ -38,7 +30,7 @@ export const getConfiguration = createAsyncThunk("config/get", async () => {
 
 export const updateConfiguration = createAsyncThunk(
   "config/update",
-  async (stepId) => {
+  async () => {
     await new Promise((resolve) =>
       setTimeout(() => {
         resolve();
@@ -47,9 +39,8 @@ export const updateConfiguration = createAsyncThunk(
 
     const config = JSON.parse(localStorage.getItem("config"));
 
-    config.steps[stepId].completed = true;
-
-    if (config.steps[stepId].last) config.completed = true;
+    if (config.currentStep === 7) config.completed = true;
+    else config.currentStep = config.currentStep + 1;
 
     localStorage.setItem("config", JSON.stringify({ ...config }));
 

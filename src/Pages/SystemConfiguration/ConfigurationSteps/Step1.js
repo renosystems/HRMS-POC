@@ -20,7 +20,7 @@ function Step1({ settings, nextStep }) {
   const handleNext = useCallback(() => {
     const newSettings = changed ? { ...settings, rwf: value } : null;
 
-    nextStep(newSettings, "step1");
+    nextStep(newSettings, 1);
   }, [changed, nextStep, settings, value]);
 
   return (

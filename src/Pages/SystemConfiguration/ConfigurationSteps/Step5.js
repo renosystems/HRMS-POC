@@ -44,7 +44,7 @@ function Step5({ nextStep }) {
   const dispatch = useDispatch();
 
   const handleNext = useCallback(() => {
-    dispatch(updateConfiguration("step5"));
+    dispatch(updateConfiguration());
 
     dispatch(
       addCeo({

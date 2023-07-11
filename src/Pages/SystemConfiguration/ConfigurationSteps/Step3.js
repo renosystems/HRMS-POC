@@ -21,7 +21,7 @@ function Step3({ settings, nextStep, stepBackHandler }) {
   const handleNext = useCallback(() => {
     const newSettings = changed ? { ...settings, approvalCycle: value } : null;
 
-    nextStep(newSettings, "step3");
+    nextStep(newSettings, 3);
   }, [changed, nextStep, settings, value]);
 
   return (

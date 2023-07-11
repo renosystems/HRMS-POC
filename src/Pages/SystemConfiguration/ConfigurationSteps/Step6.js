@@ -47,7 +47,7 @@ function Step6({ nextStep, stepBackHandler }) {
   const dispatch = useDispatch();
 
   const handleNext = useCallback(() => {
-    dispatch(updateConfiguration("step6"));
+    dispatch(updateConfiguration());
 
     nextStep();
   }, [dispatch, nextStep]);
