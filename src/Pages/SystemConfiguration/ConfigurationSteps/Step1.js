@@ -4,9 +4,10 @@ import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
 /**
  * @param {Object} settings account settings details
  * @param {Object} nextStep next step handler fn
+ * @param {Boolean} loading loading indicator
  * @returns
  */
-function Step1({ settings, nextStep }) {
+function Step1({ settings, nextStep, loading }) {
   const [value, setValue] = useState(settings.rwf);
   const [changed, setChanged] = useState(false);
 
@@ -66,6 +67,7 @@ function Step1({ settings, nextStep }) {
       >
         <Button
           onClick={handleNext}
+          isLoading={loading}
           appearance="main"
           paddingY="20px"
           paddingX="35px"

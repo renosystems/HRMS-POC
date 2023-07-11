@@ -2,11 +2,12 @@ import React, { useCallback, useState } from "react";
 import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
 /**
  * @param {Object} settings account settings details
+ * @param {Boolean} loading loading indicator
  * @param {Object} nextStep next step handler fn
  * @param {Object} stepBackHandler back step handler fn
  * @returns
  */
-function Step3({ settings, nextStep, stepBackHandler }) {
+function Step3({ settings, nextStep, stepBackHandler, loading }) {
   const [value, setValue] = useState(settings.approvalCycle);
   const [changed, setChanged] = useState(false);
 
@@ -93,6 +94,7 @@ function Step3({ settings, nextStep, stepBackHandler }) {
         </Button>
         <Button
           onClick={handleNext}
+          isLoading={loading}
           appearance="main"
           paddingY="20px"
           paddingX="35px"

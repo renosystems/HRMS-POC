@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   status: "idle" /* idle | loading | completed | failed */,
+  updating: false,
   settings: null,
   error: null,
 };
@@ -70,10 +71,10 @@ const accountSettingsSlice = createSlice({
       })
 
       .addCase(updateAccountSettings.pending, (state) => {
-        state.status = "loading";
+        state.updating = true;
       })
       .addCase(updateAccountSettings.fulfilled, (state, action) => {
-        state.status = "completed";
+        state.updating = false;
         state.settings = action.payload;
       })
       .addCase(updateAccountSettings.rejected, (state, action) => {

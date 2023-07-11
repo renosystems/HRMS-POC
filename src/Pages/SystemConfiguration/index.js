@@ -20,7 +20,9 @@ import { Navigate } from "react-router";
  */
 function SystemConfiguration() {
   const { config } = useSelector((state) => state.config);
-  const { status, settings } = useSelector((state) => state.accountSettings);
+  const { status, settings, updating } = useSelector(
+    (state) => state.accountSettings
+  );
   const [currentStep, setCurrentStep] = useState(null);
   const dispatch = useDispatch();
 
@@ -69,12 +71,19 @@ function SystemConfiguration() {
 
     switch (currentStep) {
       case 1:
-        return <Step1 settings={settings} nextStep={handleNextSep} />;
+        return (
+          <Step1
+            settings={settings}
+            nextStep={handleNextSep}
+            loading={updating}
+          />
+        );
       case 2:
         return (
           <Step2
             stepBackHandler={handleStepBack}
             settings={settings}
+            loading={updating}
             nextStep={handleNextSep}
           />
         );
@@ -83,6 +92,7 @@ function SystemConfiguration() {
           <Step3
             stepBackHandler={handleStepBack}
             settings={settings}
+            loading={updating}
             nextStep={handleNextSep}
           />
         );
@@ -91,6 +101,7 @@ function SystemConfiguration() {
           <Step4
             stepBackHandler={handleStepBack}
             settings={settings}
+            loading={updating}
             nextStep={handleNextSep}
           />
         );
