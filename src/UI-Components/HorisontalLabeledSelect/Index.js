@@ -1,4 +1,4 @@
-import { Label, Pane, SelectField } from "evergreen-ui";
+import { Label, Pane, Select } from "evergreen-ui";
 
 const HorisontalLabeledSelect = ({
   label,
@@ -21,7 +21,7 @@ const HorisontalLabeledSelect = ({
       <Label fontSize="12px" fontWeight={700}>
         {label}
       </Label>
-      <SelectField
+      <Select
         label=""
         name={name}
         value={value}
@@ -29,7 +29,10 @@ const HorisontalLabeledSelect = ({
         isInvalid={isInvalid}
         validationMessage={validationMessage}
         width="60%"
+        flex={null}
+        borderRadius="5px"
         marginBottom="0px"
+        backgroundColor="white"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -37,7 +40,7 @@ const HorisontalLabeledSelect = ({
             {option.label}
           </option>
         ))}
-      </SelectField>
+      </Select>
     </Pane>
   );
 };
