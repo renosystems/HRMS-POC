@@ -1,71 +1,85 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Pane,
-  Text,
-  Heading,
-  Button,
-  Spinner,
-  FileCard,
-  FileUploader,
-  TextInput,
-} from "evergreen-ui";
+import { Pane, Text, Heading, Button, Spinner } from "evergreen-ui";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import {
   addEmployee,
   getEmployees,
 } from "../../../Utils/RTK/slices/employees.slice";
 import { updateConfiguration } from "../../../Utils/RTK/slices/config.slice";
+import HorisontalLabeledInput from "../../../UI-Components/HorisontalLabeledInput/Index";
+
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Not a valid email address")
+    .required("This field is required"),
+  name: yup
+    .string()
+    .min(5, "Minimum five characters")
+    .max(15, "Maximam fifteen characters")
+    .required("This field is required"),
+  phoneNumber: yup
+    .string()
+    .matches(
+      /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+      "Phone number is not valid"
+    )
+    .required("This field is required"),
+});
 
 /**
  * @param {Object} nextStep next step handler fn
  * @param {Object} stepBackHandler back step handler fn
  * @returns
  */
-function Step6({ nextStep, stepBackHandler }) {
+function Step6({ nextStep, stepBackHandler, currentConfigStep }) {
   const { status, employees } = useSelector((state) => state.employees);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [title, setTitle] = useState("");
+  const [touched, setTouched] = useState(false);
 
   const [isAddingManager, setIsAddingManager] = useState(false);
   const [isAddingExcutive, setIsAddingExcutive] = useState(false);
 
-  const [files, setFiles] = useState([]);
-  const [fileRejections, setFileRejections] = useState([]);
-  const handleChange = useCallback((files) => setFiles([files[0]]), []);
-  const handleRejected = useCallback(
-    (fileRejections) => setFileRejections([fileRejections[0]]),
-    []
-  );
-  const handleRemove = useCallback(() => {
-    setFiles([]);
-    setFileRejections([]);
-  }, []);
-
   const dispatch = useDispatch();
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      name: "",
+      phoneNumber: "",
+      title: "ceo",
+    },
+    enableReinitialize: true,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      if (touched) {
+        dispatch(
+          addEmployee({
+            ...values,
+            role: isAddingManager ? "manager" : "excutive",
+          })
+        );
+      }
+
+      if (isAddingManager) setIsAddingManager(false);
+      else setIsAddingExcutive(false);
+    },
+  });
+
+  const handleChange = useCallback(
+    (e) => {
+      if (!touched) setTouched(true);
+      formik.handleChange(e);
+    },
+    [formik, touched]
+  );
 
   const handleNext = useCallback(() => {
-    dispatch(updateConfiguration());
+    if (currentConfigStep === 5) dispatch(updateConfiguration());
 
     nextStep();
-  }, [dispatch, nextStep]);
-
-  const handleAdd = useCallback(() => {
-    dispatch(
-      addEmployee({
-        name: name,
-        email: email,
-        phoneNumber: phoneNumber,
-        title: title,
-        role: isAddingManager ? "manager" : "excutive",
-      })
-    );
-
-    if (isAddingManager) setIsAddingManager(false);
-    else setIsAddingExcutive(false);
-  }, [dispatch, email, isAddingManager, name, phoneNumber, title]);
+  }, [currentConfigStep, dispatch, nextStep]);
 
   useEffect(() => {
     if (status === "idle") dispatch(getEmployees());
@@ -180,63 +194,43 @@ function Step6({ nextStep, stepBackHandler }) {
             Add your {isAddingManager ? "manager" : "excutive"} details
           </Text>
 
-          <FileUploader
-            label="Change profile image"
-            maxSizeInBytes={50 * 1024 ** 2}
-            maxFiles={1}
+          <HorisontalLabeledInput
+            label="Employee Name"
+            name="name"
+            value={formik.values.name}
             onChange={handleChange}
-            onRejected={handleRejected}
-            renderFile={(file) => {
-              const { name, size, type } = file;
-              const fileRejection = fileRejections.find(
-                (fileRejection) => fileRejection.file === file
-              );
-              const { message } = fileRejection || {};
-              return (
-                <FileCard
-                  key={name}
-                  isInvalid={fileRejection != null}
-                  name={name}
-                  onRemove={handleRemove}
-                  sizeInBytes={size}
-                  type={type}
-                  validationMessage={message}
-                />
-              );
-            }}
-            values={files}
-          />
-
-          <TextInput
-            onChange={(e) => setName(e.target.value)}
-            value={name}
+            isInvalid={formik.touched.name && Boolean(formik.errors.name)}
+            validationMessage={formik.touched.name && formik.errors.name}
             placeholder="Name"
+            type="text"
             width="100%"
-            marginBottom="20px"
           />
 
-          <TextInput
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
+          <HorisontalLabeledInput
+            label="E-mail"
+            name="email"
+            value={formik.values.email}
+            onChange={handleChange}
+            isInvalid={formik.touched.email && Boolean(formik.errors.email)}
+            validationMessage={formik.touched.email && formik.errors.email}
             placeholder="email"
             type="email"
             width="100%"
-            marginBottom="20px"
           />
-          <TextInput
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            value={phoneNumber}
+
+          <HorisontalLabeledInput
+            label="Phone Number"
+            name="phoneNumber"
+            value={formik.values.phoneNumber}
+            onChange={handleChange}
+            isInvalid={
+              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+            }
+            validationMessage={
+              formik.touched.phoneNumber && formik.errors.phoneNumber
+            }
             placeholder="Phone Number"
             width="100%"
-            marginBottom="20px"
-          />
-          <TextInput
-            label="title"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-            placeholder="Title"
-            width="100%"
-            marginBottom="20px"
           />
 
           <Pane display="flex" justifyContent="space-between" width="100%">
@@ -253,7 +247,7 @@ function Step6({ nextStep, stepBackHandler }) {
               Cancel
             </Button>
             <Button
-              onClick={handleAdd}
+              onClick={formik.handleSubmit}
               appearance="main"
               paddingY="20px"
               paddingX="35px"
