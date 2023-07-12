@@ -207,7 +207,7 @@ function Step7({ stepBackHandler }) {
                     if (!touched) setTouched(true);
                     handleChange(e);
                   };
-                  console.log(values);
+
                   return (
                     <Form>
                       {currentStep === 1 ? (
