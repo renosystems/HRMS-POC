@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
+import { Pane, Text, Heading, Radio, Button } from "evergreen-ui";
 
 /**
  * @param {Object} settings account settings details
@@ -9,7 +9,7 @@ import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
  * @returns
  */
 function Step2({ settings, nextStep, stepBackHandler, loading }) {
-  const [value, setValue] = useState(`${settings.hasApprovalCycle}`);
+  const [value, setValue] = useState(`${settings.hasApprovalCycle}` || "true");
   const [changed, setChanged] = useState(false);
 
   const handleChange = useCallback(
@@ -64,17 +64,39 @@ function Step2({ settings, nextStep, stepBackHandler, loading }) {
         managers to get approved before it's sent to the HR for job posting
       </Text>
 
-      <RadioGroup
-        value={value}
-        options={[
-          { label: "Continue without approval cycle", value: "false" },
-          { label: "Use approval cycle", value: "true" },
-        ]}
-        onChange={handleChange}
+      <Pane
+        role="group"
         display="flex"
-        width="50%"
-        justifyContent="space-between"
-      />
+        width="80%"
+        justifyContent="space-around"
+        marginTop="15px"
+      >
+        <Radio
+          name="hasApproval"
+          label="Continue without approval cycle"
+          value="false"
+          onChange={handleChange}
+          fontWeight="900"
+          checked={value === "false"}
+          border="1px solid #D3D3D3"
+          paddingX="20px"
+          paddingY="15px"
+          width="45%"
+        />
+
+        <Radio
+          name="hasApproval"
+          label="Use approval cycle"
+          value="true"
+          onChange={handleChange}
+          fontWeight="900"
+          checked={value === "true"}
+          border="1px solid #D3D3D3"
+          paddingX="20px"
+          paddingY="15px"
+          width="45%"
+        />
+      </Pane>
 
       <Pane
         display="flex"

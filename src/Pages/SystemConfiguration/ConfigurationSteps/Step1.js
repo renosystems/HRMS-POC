@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
+import { Pane, Text, Heading, Button, Radio } from "evergreen-ui";
 
 /**
  * @param {Object} settings account settings details
@@ -8,7 +8,7 @@ import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
  * @returns
  */
 function Step1({ settings, nextStep, loading }) {
-  const [value, setValue] = useState(settings.rwf);
+  const [value, setValue] = useState(settings.rwf || "jobPostingSystem");
   const [changed, setChanged] = useState(false);
 
   const handleChange = useCallback(
@@ -46,17 +46,39 @@ function Step1({ settings, nextStep, loading }) {
 
       <Heading>What's your current reqruitment work flow?</Heading>
 
-      <RadioGroup
-        value={value}
-        options={[
-          { label: "Job posting system", value: "jobPosting" },
-          { label: "Hiring request and job post system", value: "Both" },
-        ]}
-        onChange={handleChange}
+      <Pane
+        role="group"
         display="flex"
-        width="50%"
-        justifyContent="space-between"
-      />
+        width="80%"
+        justifyContent="space-around"
+        marginTop="15px"
+      >
+        <Radio
+          name="system"
+          label="Job posting system"
+          value="jobPosting"
+          onChange={handleChange}
+          fontWeight="900"
+          checked={value === "jobPostingSystem"}
+          border="1px solid #D3D3D3"
+          paddingX="20px"
+          paddingY="15px"
+          width="45%"
+        />
+
+        <Radio
+          name="system"
+          label="Hiring request and job post system"
+          value="Both"
+          onChange={handleChange}
+          fontWeight="900"
+          checked={value === "Both"}
+          border="1px solid #D3D3D3"
+          paddingX="20px"
+          paddingY="15px"
+          width="45%"
+        />
+      </Pane>
 
       <Pane
         display="flex"

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
+import { Pane, Text, Heading, Radio, Button } from "evergreen-ui";
 /**
  * @param {Object} settings account settings details
  * @param {Boolean} loading loading indicator
@@ -8,7 +8,7 @@ import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
  * @returns
  */
 function Step3({ settings, nextStep, stepBackHandler, loading }) {
-  const [value, setValue] = useState(settings.approvalCycle);
+  const [value, setValue] = useState(settings.approvalCycle || "hiringRequest");
   const [changed, setChanged] = useState(false);
 
   const handleChange = useCallback(
@@ -60,21 +60,46 @@ function Step3({ settings, nextStep, stepBackHandler, loading }) {
       </Text>
 
       <Pane display="flex" justifyContent="center" width="50%">
-        <RadioGroup
-          value={value}
-          options={[
-            {
-              label: "Only Hiring request approval cycle",
-              value: "hiringRequest",
-            },
-            { label: "Only job post approval cycle", value: "jobPost" },
-            { label: "Approval cycle for both", value: "both" },
-          ]}
-          onChange={handleChange}
-          display="flex"
-          flexDirection="column"
-          width="50%"
-        />
+        <Pane role="group" display="flex" flexDirection="column" width="100%">
+          <Radio
+            name="approval"
+            label="Only Hiring request approval cycle"
+            value="hiringRequest"
+            onChange={handleChange}
+            fontWeight="900"
+            checked={value === "hiringRequest"}
+            border="1px solid #D3D3D3"
+            paddingX="20px"
+            paddingY="15px"
+            width="100%"
+          />
+
+          <Radio
+            name="approval"
+            label="Only job post approval cycle"
+            value="jobPost"
+            onChange={handleChange}
+            fontWeight="900"
+            checked={value === "jobPost"}
+            border="1px solid #D3D3D3"
+            paddingX="20px"
+            paddingY="15px"
+            width="100%"
+          />
+
+          <Radio
+            name="approval"
+            label="Approval cycle for both"
+            value="both"
+            onChange={handleChange}
+            fontWeight="900"
+            checked={value === "both"}
+            border="1px solid #D3D3D3"
+            paddingX="20px"
+            paddingY="15px"
+            width="100%"
+          />
+        </Pane>
       </Pane>
 
       <Pane

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
+import { Pane, Text, Heading, Radio, Button } from "evergreen-ui";
 /**
  * @param {Object} settings account settings details
  * @param {Boolean} loading loading indicator
@@ -8,7 +8,7 @@ import { Pane, Text, Heading, RadioGroup, Button } from "evergreen-ui";
  * @returns
  */
 function Step4({ settings, nextStep, stepBackHandler, loading }) {
-  const [value, setValue] = useState(settings.applicantForm);
+  const [value, setValue] = useState(settings.applicantForm || "Basic");
   const [changed, setChanged] = useState(false);
 
   const handleChange = useCallback(
@@ -63,17 +63,39 @@ function Step4({ settings, nextStep, stepBackHandler, loading }) {
         statistics to the HR
       </Text>
 
-      <RadioGroup
-        value={value}
-        options={[
-          { label: "Basic applicant form", value: "Basic" },
-          { label: "Detailed applicant form", value: "detailed" },
-        ]}
-        onChange={handleChange}
+      <Pane
+        role="group"
         display="flex"
-        width="50%"
-        justifyContent="space-between"
-      />
+        width="80%"
+        justifyContent="space-around"
+        marginTop="15px"
+      >
+        <Radio
+          name="applicantForm"
+          label="Basic applicant form"
+          value="Basic"
+          onChange={handleChange}
+          fontWeight="900"
+          checked={value === "Basic"}
+          border="1px solid #D3D3D3"
+          paddingX="20px"
+          paddingY="15px"
+          width="45%"
+        />
+
+        <Radio
+          name="applicantForm"
+          label="Detailed applicant form"
+          value="detailed"
+          onChange={handleChange}
+          fontWeight="900"
+          checked={value === "detailed"}
+          border="1px solid #D3D3D3"
+          paddingX="20px"
+          paddingY="15px"
+          width="45%"
+        />
+      </Pane>
 
       <Pane
         display="flex"
