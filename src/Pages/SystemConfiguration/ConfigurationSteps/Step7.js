@@ -7,15 +7,30 @@ import {
   Spinner,
   NewGridItemIcon,
   Radio,
-  TextInput,
 } from "evergreen-ui";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import {
   addDepartment,
   getDepartments,
 } from "../../../Utils/RTK/slices/departments.slice";
 import { updateConfiguration } from "../../../Utils/RTK/slices/config.slice";
+import HorisontalLabeledInput from "../../../UI-Components/HorisontalLabeledInput/Index";
+import { getEmployees } from "../../../Utils/RTK/slices/employees.slice";
+import HorisontalLabeledSelect from "../../../UI-Components/HorisontalLabeledSelect/Index";
+
+const validationSchema = yup.object().shape({
+  order: yup.string().required("This field is required"),
+  name: yup
+    .string()
+    .min(5, "Minimum five characters")
+    .max(15, "Maximam fifteen characters")
+    .required("This field is required"),
+  manager: yup.string(),
+  excutive: yup.string(),
+});
 
 /**
  * @param {Object} stepBackHandler back step handler fn
@@ -23,31 +38,59 @@ import { updateConfiguration } from "../../../Utils/RTK/slices/config.slice";
  */
 function Step7({ stepBackHandler }) {
   const { status, departments } = useSelector((state) => state.departments);
+  const { managers, excutives } = useSelector((state) => state.employees);
+
   const [isAddFirstClicked, setIsAddFirstClicked] = useState(false);
   const [isAddingDepartment, setIsAddingDepartment] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-
-  const [order, setOrder] = useState("ascending");
-  const [depName, setDepName] = useState("");
+  const [touched, setTouched] = useState(false);
 
   const dispatch = useDispatch();
+  const formik = useFormik({
+    initialValues: {
+      order: "ascending",
+      name: "",
+      manager: "none",
+      excutive: "none",
+    },
+    enableReinitialize: true,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      if (touched) {
+        dispatch(addDepartment({ ...values }));
+        setIsAddingDepartment(false);
+      }
+    },
+  });
+
+  const handleChange = useCallback(
+    (e) => {
+      if (!touched) setTouched(true);
+      formik.handleChange(e);
+    },
+    [formik, touched]
+  );
+
+  const handleNextSep = () => setCurrentStep(2);
 
   const handleFinish = useCallback(() => {
     dispatch(updateConfiguration());
   }, [dispatch]);
 
-  const handleNext = useCallback(() => {
-    if (currentStep === 1) {
-      setCurrentStep(2);
-    } else {
-      dispatch(addDepartment({ order: order, name: depName }));
-      setIsAddingDepartment(false);
-    }
-  }, [currentStep, depName, dispatch, order]);
-
   useEffect(() => {
-    if (status === "idle") dispatch(getDepartments());
+    if (status === "idle") {
+      dispatch(getDepartments());
+      dispatch(getEmployees());
+    }
   }, [dispatch, status]);
+
+  // useEffect(() => {
+  //   if (managers && !formik.values.manager)
+  //     formik.setFieldValue("manager", "none");
+
+  //   if (excutives && !formik.values.excutive)
+  //     formik.setFieldValue("excutive", "none");
+  // }, [excutives, formik, managers]);
 
   if (status === "idle" || status === "loading") {
     return (
@@ -148,25 +191,82 @@ function Step7({ stepBackHandler }) {
                     name="order"
                     label="Ascending Heirarchry levels"
                     value="ascending"
-                    onChange={(e, checked) => checked && setOrder("ascending")}
+                    onChange={() => formik.setFieldValue("order", "ascending")}
                     fontWeight="900"
+                    checked={formik.values.order === "ascending"}
                   />
                   <Radio
                     name="order"
                     label="Descending Heirarchry levels"
                     value="descending"
-                    onChange={(e, checked) => checked && setOrder("ascending")}
+                    onChange={() => formik.setFieldValue("order", "descending")}
+                    checked={formik.values.order === "descending"}
                   />
                 </Pane>
               ) : (
                 <Pane>
-                  <TextInput
-                    onChange={(e) => setDepName(e.target.value)}
-                    value={depName}
-                    placeholder="Department name"
+                  <HorisontalLabeledInput
+                    label="Department Name"
+                    name="name"
+                    value={formik.values.name}
+                    onChange={handleChange}
+                    isInvalid={
+                      formik.touched.name && Boolean(formik.errors.name)
+                    }
+                    validationMessage={
+                      formik.touched.name && formik.errors.name
+                    }
+                    placeholder="Name"
+                    type="text"
                     width="100%"
-                    marginBottom="20px"
                   />
+
+                  {managers ? (
+                    <HorisontalLabeledSelect
+                      label="Manager"
+                      name="manager"
+                      value={formik.values.manager}
+                      onChange={handleChange}
+                      isInvalid={
+                        formik.touched.manager && Boolean(formik.errors.manager)
+                      }
+                      validationMessage={
+                        formik.touched.manager && formik.errors.manager
+                      }
+                      options={[
+                        { label: "none", value: "" },
+                        ...managers.map((manager) => ({
+                          label: manager.name,
+                          value: manager.name,
+                        })),
+                      ]}
+                      width="100%"
+                    />
+                  ) : null}
+
+                  {excutives?.length ? (
+                    <HorisontalLabeledSelect
+                      label="Report to"
+                      name="excutive"
+                      value={formik.values.excutive}
+                      onChange={handleChange}
+                      isInvalid={
+                        formik.touched.excutive &&
+                        Boolean(formik.errors.excutive)
+                      }
+                      validationMessage={
+                        formik.touched.excutive && formik.errors.excutive
+                      }
+                      options={[
+                        { label: "none", value: "" },
+                        ...managers.map((manager) => ({
+                          label: manager.name,
+                          value: manager.name,
+                        })),
+                      ]}
+                      width="100%"
+                    />
+                  ) : null}
                 </Pane>
               )}
 
@@ -194,7 +294,9 @@ function Step7({ stepBackHandler }) {
                 </Button>
 
                 <Button
-                  onClick={handleNext}
+                  onClick={
+                    currentStep === 1 ? handleNextSep : formik.handleSubmit
+                  }
                   appearance="main"
                   paddingY="20px"
                   paddingX="35px"

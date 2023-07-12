@@ -124,12 +124,7 @@ function SystemConfiguration() {
         );
 
       case 7:
-        return (
-          <Step7
-            stepBackHandler={handleStepBack}
-            currentConfigStep={config.currentStep}
-          />
-        );
+        return <Step7 stepBackHandler={handleStepBack} />;
 
       default:
         return (
