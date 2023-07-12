@@ -32,6 +32,21 @@ const validationSchema = yup.object().shape({
     .required("This field is required"),
   manager: yup.string(),
   excutive: yup.string(),
+  levels: yup
+    .array()
+    .min(1)
+    .of(
+      yup.object().shape({
+        titles: yup
+          .array()
+          .of(
+            yup
+              .string("This field must include characters")
+              .min(5, "Minimum five characters")
+              .required("This field is required")
+          ),
+      })
+    ),
 });
 
 /**
@@ -171,21 +186,20 @@ function Step7({ stepBackHandler }) {
                   excutive: "none",
                   levels: [],
                 }}
-                enableReinitialize
+                enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
-                  if (touched) {
-                    dispatch(addDepartment({ ...values }));
-                    setIsAddingDepartment(false);
-                    setCurrentStep(1);
-                    setTouched(false);
-                  }
+                  dispatch(addDepartment({ ...values }));
+                  setIsAddingDepartment(false);
+                  setCurrentStep(1);
+                  setTouched(false);
                 }}
               >
                 {({
                   values,
                   setFieldValue,
                   errors,
+                  touched: formikTouched,
                   handleSubmit,
                   handleChange,
                 }) => {
@@ -226,8 +240,12 @@ function Step7({ stepBackHandler }) {
                             name="name"
                             value={values.name}
                             onChange={handleFieldChange}
-                            isInvalid={touched && Boolean(errors.name)}
-                            validationMessage={touched && errors.name}
+                            isInvalid={
+                              formikTouched.name && Boolean(errors.name)
+                            }
+                            validationMessage={
+                              formikTouched.name && errors.name
+                            }
                             placeholder="Name"
                             type="text"
                             width="100%"
@@ -238,9 +256,11 @@ function Step7({ stepBackHandler }) {
                             name="manager"
                             value={values.manager}
                             onChange={handleFieldChange}
-                            isInvalid={touched && Boolean(errors.manager)}
+                            isInvalid={
+                              formikTouched.manager && Boolean(errors.manager)
+                            }
                             validationMessage={
-                              touched && Boolean(errors.manager)
+                              formikTouched.manager && errors.manager
                             }
                             options={[
                               { label: "none", value: "" },
@@ -257,8 +277,12 @@ function Step7({ stepBackHandler }) {
                             name="excutive"
                             value={values.excutive}
                             onChange={handleFieldChange}
-                            isInvalid={touched && Boolean(errors.excutive)}
-                            validationMessage={touched && errors.excutive}
+                            isInvalid={
+                              formikTouched.excutive && Boolean(errors.excutive)
+                            }
+                            validationMessage={
+                              formikTouched.excutive && errors.excutive
+                            }
                             options={[
                               { label: "none", value: "" },
                               ...excutives.map((manager) => ({
@@ -283,7 +307,7 @@ function Step7({ stepBackHandler }) {
                               <div>
                                 {values.levels ? (
                                   <>
-                                    {values.levels.map((lvl, index) => (
+                                    {values.levels?.map((lvl, index) => (
                                       <div key={index}>
                                         <Pane
                                           display="flex"
@@ -303,7 +327,7 @@ function Step7({ stepBackHandler }) {
                                               >
                                                 {values.levels[
                                                   index
-                                                ].titles.map((title, i) => (
+                                                ].titles?.map((title, i) => (
                                                   <div key={i}>
                                                     <Pane display="flex">
                                                       <TextInputField
@@ -312,6 +336,22 @@ function Step7({ stepBackHandler }) {
                                                         value={
                                                           values.levels[index]
                                                             .titles[i]
+                                                        }
+                                                        isInvalid={
+                                                          errors.levels &&
+                                                          typeof errors.levels !==
+                                                            "string" &&
+                                                          Boolean(
+                                                            errors.levels[index]
+                                                              ?.titles[i]
+                                                          )
+                                                        }
+                                                        validationMessage={
+                                                          errors.levels &&
+                                                          typeof errors.levels !==
+                                                            "string" &&
+                                                          errors.levels[index]
+                                                            ?.titles[i]
                                                         }
                                                         marginTop="0px"
                                                         marginBottom="0px"
