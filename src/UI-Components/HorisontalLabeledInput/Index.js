@@ -19,7 +19,9 @@ const HorisontalLabeledInput = ({
       paddingY="10px"
       width={width}
     >
-      <Label>{label}</Label>
+      <Label fontSize="12px" fontWeight={700}>
+        {label}
+      </Label>
       <TextInputField
         label=""
         name={name}
