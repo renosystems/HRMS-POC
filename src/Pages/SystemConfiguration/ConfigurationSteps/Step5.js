@@ -139,7 +139,7 @@ function Step5({ nextStep, currentConfigStep }) {
           </Text>
 
           <HorisontalLabeledInput
-            label="Name"
+            label="Employee Name"
             name="name"
             value={formik.values.name}
             onChange={handleChange}
