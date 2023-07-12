@@ -76,7 +76,7 @@ function Step6({ nextStep, stepBackHandler, currentConfigStep }) {
   );
 
   const handleNext = useCallback(() => {
-    if (currentConfigStep === 5) dispatch(updateConfiguration());
+    if (currentConfigStep === 6) dispatch(updateConfiguration());
 
     nextStep();
   }, [currentConfigStep, dispatch, nextStep]);
