@@ -207,7 +207,7 @@ function Step7({ stepBackHandler }) {
                     if (!touched) setTouched(true);
                     handleChange(e);
                   };
-
+                  console.log(values);
                   return (
                     <Form>
                       {currentStep === 1 ? (
@@ -358,9 +358,39 @@ function Step7({ stepBackHandler }) {
                                                       />
                                                       <Button
                                                         type="button"
-                                                        onClick={() =>
-                                                          arrayHelpers.remove(i)
-                                                        }
+                                                        onClick={() => {
+                                                          if (
+                                                            i === 0 &&
+                                                            (index <
+                                                              values.levels
+                                                                .length -
+                                                                1 ||
+                                                              index === 0)
+                                                          )
+                                                            return;
+
+                                                          arrayHelpers.remove(
+                                                            i
+                                                          );
+
+                                                          if (
+                                                            index ===
+                                                              values.levels
+                                                                .length -
+                                                                1 &&
+                                                            i === 0
+                                                          )
+                                                            setFieldValue(
+                                                              "levels",
+                                                              values.levels.filter(
+                                                                (lvl) =>
+                                                                  lvl.name !==
+                                                                  `Level ${
+                                                                    index + 1
+                                                                  }`
+                                                              )
+                                                            );
+                                                        }}
                                                         marginTop="8px"
                                                       >
                                                         -
