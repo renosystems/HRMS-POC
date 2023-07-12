@@ -7,10 +7,12 @@ import {
   Spinner,
   NewGridItemIcon,
   Radio,
+  Label,
+  TextInputField,
 } from "evergreen-ui";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 import * as yup from "yup";
 import {
   addDepartment,
@@ -46,30 +48,6 @@ function Step7({ stepBackHandler }) {
   const [touched, setTouched] = useState(false);
 
   const dispatch = useDispatch();
-  const formik = useFormik({
-    initialValues: {
-      order: "ascending",
-      name: "",
-      manager: "none",
-      excutive: "none",
-    },
-    enableReinitialize: true,
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      if (touched) {
-        dispatch(addDepartment({ ...values }));
-        setIsAddingDepartment(false);
-      }
-    },
-  });
-
-  const handleChange = useCallback(
-    (e) => {
-      if (!touched) setTouched(true);
-      formik.handleChange(e);
-    },
-    [formik, touched]
-  );
 
   const handleNextSep = () => setCurrentStep(2);
 
@@ -185,125 +163,257 @@ function Step7({ stepBackHandler }) {
               justifyContent="space-between"
               minHeight="50vh"
             >
-              {currentStep === 1 ? (
-                <Pane aria-label="Radio Group Heirarchry levels" role="group">
-                  <Radio
-                    name="order"
-                    label="Ascending Heirarchry levels"
-                    value="ascending"
-                    onChange={() => formik.setFieldValue("order", "ascending")}
-                    fontWeight="900"
-                    checked={formik.values.order === "ascending"}
-                  />
-                  <Radio
-                    name="order"
-                    label="Descending Heirarchry levels"
-                    value="descending"
-                    onChange={() => formik.setFieldValue("order", "descending")}
-                    checked={formik.values.order === "descending"}
-                  />
-                </Pane>
-              ) : (
-                <Pane>
-                  <HorisontalLabeledInput
-                    label="Department Name"
-                    name="name"
-                    value={formik.values.name}
-                    onChange={handleChange}
-                    isInvalid={
-                      formik.touched.name && Boolean(formik.errors.name)
-                    }
-                    validationMessage={
-                      formik.touched.name && formik.errors.name
-                    }
-                    placeholder="Name"
-                    type="text"
-                    width="100%"
-                  />
-
-                  {managers ? (
-                    <HorisontalLabeledSelect
-                      label="Manager"
-                      name="manager"
-                      value={formik.values.manager}
-                      onChange={handleChange}
-                      isInvalid={
-                        formik.touched.manager && Boolean(formik.errors.manager)
-                      }
-                      validationMessage={
-                        formik.touched.manager && formik.errors.manager
-                      }
-                      options={[
-                        { label: "none", value: "" },
-                        ...managers.map((manager) => ({
-                          label: manager.name,
-                          value: manager.name,
-                        })),
-                      ]}
-                      width="100%"
-                    />
-                  ) : null}
-
-                  {excutives?.length ? (
-                    <HorisontalLabeledSelect
-                      label="Report to"
-                      name="excutive"
-                      value={formik.values.excutive}
-                      onChange={handleChange}
-                      isInvalid={
-                        formik.touched.excutive &&
-                        Boolean(formik.errors.excutive)
-                      }
-                      validationMessage={
-                        formik.touched.excutive && formik.errors.excutive
-                      }
-                      options={[
-                        { label: "none", value: "" },
-                        ...managers.map((manager) => ({
-                          label: manager.name,
-                          value: manager.name,
-                        })),
-                      ]}
-                      width="100%"
-                    />
-                  ) : null}
-                </Pane>
-              )}
-
-              <Pane
-                display="flex"
-                justifyContent="space-between"
-                alignItems="flex-end"
-                width="100%"
-                padding="auto"
-                paddingY="20px"
-              >
-                <Button
-                  onClick={() => {
-                    if (currentStep === 2) setCurrentStep(1);
-                    else {
-                      setIsAddFirstClicked(false);
-                      setIsAddingDepartment(false);
-                    }
-                  }}
-                  appearance="default"
-                  paddingY="20px"
-                  paddingX="35px"
-                >
-                  Back
-                </Button>
-
-                <Button
-                  onClick={
-                    currentStep === 1 ? handleNextSep : formik.handleSubmit
+              <Formik
+                initialValues={{
+                  order: "ascending",
+                  name: "",
+                  manager: "none",
+                  excutive: "none",
+                  levels: [],
+                }}
+                enableReinitialize
+                validationSchema={validationSchema}
+                onSubmit={(values) => {
+                  if (touched) {
+                    dispatch(addDepartment({ ...values }));
+                    setIsAddingDepartment(false);
+                    setCurrentStep(1);
+                    setTouched(false);
                   }
-                  appearance="main"
-                  paddingY="20px"
-                  paddingX="35px"
-                >
-                  Next
-                </Button>
-              </Pane>
+                }}
+              >
+                {({
+                  values,
+                  setFieldValue,
+                  errors,
+                  handleSubmit,
+                  handleChange,
+                }) => {
+                  const handleFieldChange = (e) => {
+                    if (!touched) setTouched(true);
+                    handleChange(e);
+                  };
+
+                  return (
+                    <Form>
+                      {currentStep === 1 ? (
+                        <Pane
+                          aria-label="Radio Group Heirarchry levels"
+                          role="group"
+                        >
+                          <Radio
+                            name="order"
+                            label="Ascending Heirarchry levels"
+                            value="ascending"
+                            onChange={() => setFieldValue("order", "ascending")}
+                            fontWeight="900"
+                            checked={values.order === "ascending"}
+                          />
+                          <Radio
+                            name="order"
+                            label="Descending Heirarchry levels"
+                            value="descending"
+                            onChange={() =>
+                              setFieldValue("order", "descending")
+                            }
+                            checked={values.order === "descending"}
+                          />
+                        </Pane>
+                      ) : (
+                        <Pane>
+                          <HorisontalLabeledInput
+                            label="Department Name"
+                            name="name"
+                            value={values.name}
+                            onChange={handleFieldChange}
+                            isInvalid={touched && Boolean(errors.name)}
+                            validationMessage={touched && errors.name}
+                            placeholder="Name"
+                            type="text"
+                            width="100%"
+                          />
+
+                          <HorisontalLabeledSelect
+                            label="Manager"
+                            name="manager"
+                            value={values.manager}
+                            onChange={handleFieldChange}
+                            isInvalid={touched && Boolean(errors.manager)}
+                            validationMessage={
+                              touched && Boolean(errors.manager)
+                            }
+                            options={[
+                              { label: "none", value: "" },
+                              ...managers.map((manager) => ({
+                                label: manager.name,
+                                value: manager.name,
+                              })),
+                            ]}
+                            width="100%"
+                          />
+
+                          <HorisontalLabeledSelect
+                            label="Report to"
+                            name="excutive"
+                            value={values.excutive}
+                            onChange={handleFieldChange}
+                            isInvalid={touched && Boolean(errors.excutive)}
+                            validationMessage={touched && errors.excutive}
+                            options={[
+                              { label: "none", value: "" },
+                              ...excutives.map((manager) => ({
+                                label: manager.name,
+                                value: manager.name,
+                              })),
+                            ]}
+                            width="100%"
+                          />
+
+                          <hr style={{ width: "100%" }} />
+
+                          <Heading>Department titles</Heading>
+                          <Text>
+                            Ascending or descending based on your company's
+                            Heirarchry
+                          </Text>
+
+                          <FieldArray
+                            name="levels"
+                            render={(arrayHelpers) => (
+                              <div>
+                                {values.levels ? (
+                                  <>
+                                    {values.levels.map((lvl, index) => (
+                                      <div key={index}>
+                                        <Pane
+                                          display="flex"
+                                          justifyContent="space-between"
+                                          marginBottom="20px"
+                                        >
+                                          <Label marginTop="8px">
+                                            {lvl.name}
+                                          </Label>
+
+                                          <FieldArray
+                                            name={`levels.${index}.titles`}
+                                            render={(arrayHelpers) => (
+                                              <Pane
+                                                display="flex"
+                                                flexDirection="column"
+                                              >
+                                                {values.levels[
+                                                  index
+                                                ].titles.map((title, i) => (
+                                                  <div key={i}>
+                                                    <Pane display="flex">
+                                                      <TextInputField
+                                                        name={`levels.${index}.titles.${i}`}
+                                                        onChange={handleChange}
+                                                        value={
+                                                          values.levels[index]
+                                                            .titles[i]
+                                                        }
+                                                        marginTop="0px"
+                                                        marginBottom="0px"
+                                                      />
+                                                      <Button
+                                                        type="button"
+                                                        onClick={() =>
+                                                          arrayHelpers.remove(i)
+                                                        }
+                                                        marginTop="8px"
+                                                      >
+                                                        -
+                                                      </Button>
+                                                    </Pane>
+                                                  </div>
+                                                ))}
+                                                <Button
+                                                  type="button"
+                                                  onClick={() =>
+                                                    arrayHelpers.push("")
+                                                  }
+                                                  marginTop="8px"
+                                                  appearance="minimal"
+                                                >
+                                                  + Add new title
+                                                </Button>
+                                              </Pane>
+                                            )}
+                                          />
+                                        </Pane>
+                                      </div>
+                                    ))}
+
+                                    <Pane
+                                      display="flex"
+                                      justifyContent="flex-end"
+                                      marginTop="20px"
+                                    >
+                                      <Button
+                                        onClick={() =>
+                                          arrayHelpers.push({
+                                            name: `Level ${
+                                              values.levels.length + 1
+                                            }`,
+                                            titles: [""],
+                                          })
+                                        }
+                                        type="button"
+                                        appearance="main"
+                                        paddingY="10px"
+                                        paddingX="50px"
+                                      >
+                                        Add new level
+                                      </Button>
+                                    </Pane>
+                                  </>
+                                ) : null}
+                              </div>
+                            )}
+                          />
+                        </Pane>
+                      )}
+
+                      <Pane
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="flex-end"
+                        width="100%"
+                        padding="auto"
+                        paddingY="20px"
+                      >
+                        <Button
+                          onClick={() => {
+                            if (currentStep === 2) setCurrentStep(1);
+                            else {
+                              setIsAddFirstClicked(false);
+                              setIsAddingDepartment(false);
+                            }
+                          }}
+                          appearance="default"
+                          paddingY="20px"
+                          paddingX="35px"
+                        >
+                          Back
+                        </Button>
+
+                        <Button
+                          onClick={
+                            currentStep === 1 ? handleNextSep : handleSubmit
+                          }
+                          appearance="main"
+                          paddingY="20px"
+                          paddingX="35px"
+                          type="submit"
+                        >
+                          Next
+                        </Button>
+                      </Pane>
+                    </Form>
+                  );
+                }}
+              </Formik>
             </Pane>
           ) : (
             <>
