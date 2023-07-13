@@ -30,22 +30,15 @@ const validationSchema = yup.object().shape({
     .min(5, "Minimum five characters")
     .max(15, "Maximam fifteen characters")
     .required("This field is required"),
-  // manager: yup.string().when("excutive", {
-  //   is: (value) => value === "none",
-  //   then: yup
-  //     .string()
-  //     .required()
-  //     .notOneOf(["none"], "Manager can't be none when excutive is also none"),
-  //   otherwise: yup.string(),
-  // }),
-  // excutive: yup.string().when("manager", {
-  //   is: (value) => value === "none",
-  //   then: yup
-  //     .string()
-  //     .required()
-  //     .notOneOf(["none"], "Manager can't be none when excutive is also none"),
-  //   otherwise: yup.string(),
-  // }),
+
+  manager: yup.string().when("excutive", {
+    is: (value) => value === undefined,
+    then: () =>
+      yup.string().required("Manager can't be none when excutive is also none"),
+    otherwise: () => yup.string(),
+  }),
+
+  excutive: yup.string(),
   levels: yup
     .array()
     .min(1)
@@ -196,8 +189,8 @@ function Step7({ stepBackHandler }) {
                 initialValues={{
                   order: "ascending",
                   name: "",
-                  manager: "none",
-                  excutive: "none",
+                  manager: "",
+                  excutive: "",
                   levels: [],
                 }}
                 enableReinitialize={true}
@@ -318,12 +311,8 @@ function Step7({ stepBackHandler }) {
                             name="manager"
                             value={values.manager}
                             onChange={handleFieldChange}
-                            isInvalid={
-                              formikTouched.manager && Boolean(errors.manager)
-                            }
-                            validationMessage={
-                              formikTouched.manager && errors.manager
-                            }
+                            isInvalid={Boolean(errors.manager)}
+                            validationMessage={errors.manager}
                             options={[
                               { label: "none", value: "" },
                               ...managers.map((manager) => ({
