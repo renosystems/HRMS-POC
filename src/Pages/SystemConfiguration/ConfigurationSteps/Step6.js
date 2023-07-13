@@ -127,28 +127,43 @@ function Step6({ nextStep, stepBackHandler, currentConfigStep }) {
             <Text paddingY="10px" size={300} color="muted">
               Please note that excutives are higher in the heirarchy
             </Text>
-            <Button
-              onClick={() => {
-                setIsAddingManager(true);
-              }}
-              background="white"
-              color="grey"
-              width="100%"
-              marginBottom="15px"
-              marginTop="20px"
-            >
-              Add managers
-            </Button>
-            <Button
-              onClick={() => {
-                setIsAddingExcutive(true);
-              }}
-              background="white"
-              color="grey"
-              width="100%"
-            >
-              Add excutives
-            </Button>
+
+            <Pane>
+              {employees.map((emp) => (
+                <Button
+                  background="white"
+                  color="grey"
+                  width="100%"
+                  marginY="10px"
+                  key={emp.name}
+                >
+                  {emp.name}
+                </Button>
+              ))}
+              <hr style={{ width: "100%" }} />
+              <Button
+                onClick={() => {
+                  setIsAddingManager(true);
+                }}
+                background="white"
+                color="grey"
+                width="100%"
+                marginBottom="15px"
+                marginTop="20px"
+              >
+                Add managers
+              </Button>
+              <Button
+                onClick={() => {
+                  setIsAddingExcutive(true);
+                }}
+                background="white"
+                color="grey"
+                width="100%"
+              >
+                Add excutives
+              </Button>
+            </Pane>
           </Pane>
 
           <Pane
