@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { Pane, Text, Heading, Button, PeopleIcon, Spinner } from "evergreen-ui";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import {
 import { updateConfiguration } from "../../../Utils/RTK/slices/config.slice";
 
 import HorisontalLabeledInput from "../../../UI-Components/HorisontalLabeledInput/Index";
+import profileImage from "../../../Assets/Icons/profile-image.png";
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -40,6 +41,7 @@ const validationSchema = yup.object().shape({
 function Step5({ nextStep, currentConfigStep }) {
   const { status, ceo } = useSelector((state) => state.employees);
   const [touched, setTouched] = useState(false);
+  const inputFile = useRef(null);
 
   const dispatch = useDispatch();
   const formik = useFormik({
@@ -48,6 +50,7 @@ function Step5({ nextStep, currentConfigStep }) {
       name: ceo?.name || "",
       phoneNumber: ceo?.phoneNumber || "",
       title: ceo?.title || "ceo",
+      profilePic: ceo?.profilePic || "",
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -70,6 +73,10 @@ function Step5({ nextStep, currentConfigStep }) {
     },
     [formik, touched]
   );
+
+  const handleChangeImage = () => {
+    inputFile.current.click();
+  };
 
   useEffect(() => {
     if (status === "idle") dispatch(getEmployees());
@@ -137,6 +144,34 @@ function Step5({ nextStep, currentConfigStep }) {
             This step is created by default and your CEO is added to the top
             management department
           </Text>
+
+          <Pane>
+            <img
+              src={profileImage}
+              alt="profile-pic"
+              width="100"
+              height="100"
+            />
+            <br />
+            <Text
+              color="#3E87F4"
+              fontSize="12px"
+              cursor="pointer"
+              onClick={handleChangeImage}
+            >
+              Change profile Image
+            </Text>
+            <input
+              type="file"
+              id="file"
+              ref={inputFile}
+              style={{ display: "none" }}
+              onChange={(e) => {
+                if (!touched) setTouched(true);
+                formik.setFieldValue("profilePic", e.target.files[0].name);
+              }}
+            />
+          </Pane>
 
           <HorisontalLabeledInput
             label="Employee Name"
