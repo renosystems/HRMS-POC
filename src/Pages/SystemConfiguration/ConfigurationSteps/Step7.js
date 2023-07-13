@@ -30,8 +30,22 @@ const validationSchema = yup.object().shape({
     .min(5, "Minimum five characters")
     .max(15, "Maximam fifteen characters")
     .required("This field is required"),
-  manager: yup.string(),
-  excutive: yup.string(),
+  // manager: yup.string().when("excutive", {
+  //   is: (value) => value === "none",
+  //   then: yup
+  //     .string()
+  //     .required()
+  //     .notOneOf(["none"], "Manager can't be none when excutive is also none"),
+  //   otherwise: yup.string(),
+  // }),
+  // excutive: yup.string().when("manager", {
+  //   is: (value) => value === "none",
+  //   then: yup
+  //     .string()
+  //     .required()
+  //     .notOneOf(["none"], "Manager can't be none when excutive is also none"),
+  //   otherwise: yup.string(),
+  // }),
   levels: yup
     .array()
     .min(1)
@@ -223,6 +237,30 @@ function Step7({ stepBackHandler }) {
                             fontWeight="900"
                             checked={values.order === "ascending"}
                           />
+                          <Pane
+                            width="80%"
+                            paddingX="15px"
+                            paddingY="15px"
+                            marginY="10px"
+                            backgroundColor="white"
+                          >
+                            <Pane
+                              display="flex"
+                              justifyContent="space-between"
+                              marginY="5px"
+                            >
+                              <Pane display="flex" flexDirection="column">
+                                <Text>Level 1</Text>
+                                <Text>Level 2</Text>
+                                <Text>Level 3</Text>
+                              </Pane>
+                              <Pane display="flex" flexDirection="column">
+                                <Text>Department manager</Text>
+                                <Text>Team Leader</Text>
+                                <Text>Jr developer</Text>
+                              </Pane>
+                            </Pane>
+                          </Pane>
                           <Radio
                             name="order"
                             label="Descending Heirarchry levels"
@@ -232,6 +270,30 @@ function Step7({ stepBackHandler }) {
                             }
                             checked={values.order === "descending"}
                           />
+                          <Pane
+                            width="80%"
+                            paddingX="15px"
+                            paddingY="15px"
+                            marginY="10px"
+                            backgroundColor="white"
+                          >
+                            <Pane
+                              display="flex"
+                              justifyContent="space-between"
+                              marginY="5px"
+                            >
+                              <Pane display="flex" flexDirection="column">
+                                <Text>Level 3</Text>
+                                <Text>Level 2</Text>
+                                <Text>Level 1</Text>
+                              </Pane>
+                              <Pane display="flex" flexDirection="column">
+                                <Text>Department manager</Text>
+                                <Text>Team Leader</Text>
+                                <Text>Jr developer</Text>
+                              </Pane>
+                            </Pane>
+                          </Pane>
                         </Pane>
                       ) : (
                         <Pane>
