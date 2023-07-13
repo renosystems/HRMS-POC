@@ -31,6 +31,12 @@ const DefaultTheme = mergeTheme(defaultTheme, {
       },
     },
 
+    Select: {
+      baseStyle: {
+        background: "white",
+      },
+    },
+
     Checkbox: {
       baseStyle: {
         backgroundColor: "grey",
