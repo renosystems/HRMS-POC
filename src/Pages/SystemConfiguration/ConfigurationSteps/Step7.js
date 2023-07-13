@@ -615,13 +615,7 @@ function Step7({ stepBackHandler }) {
                 paddingY="20px"
               >
                 <Button
-                  onClick={() => {
-                    if (currentStep === 2) setCurrentStep(1);
-                    else {
-                      setIsAddFirstClicked(false);
-                      setIsAddingDepartment(false);
-                    }
-                  }}
+                  onClick={stepBackHandler}
                   appearance="default"
                   paddingY="20px"
                   paddingX="35px"
