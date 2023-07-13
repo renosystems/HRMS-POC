@@ -207,7 +207,6 @@ function Step7({ stepBackHandler }) {
                   setFieldValue,
                   errors,
                   touched: formikTouched,
-                  setTouched: setFormikTouched,
                   handleSubmit,
                   handleChange,
                 }) => {
