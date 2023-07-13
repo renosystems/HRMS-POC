@@ -8,7 +8,7 @@ import { Pane, Text, Heading, Radio, Button } from "evergreen-ui";
  * @returns
  */
 function Step4({ settings, nextStep, stepBackHandler, loading }) {
-  const [value, setValue] = useState(settings.applicantForm || "Basic");
+  const [value, setValue] = useState(settings.applicantForm || "basic");
   const [changed, setChanged] = useState(false);
 
   const handleChange = useCallback(
@@ -73,10 +73,10 @@ function Step4({ settings, nextStep, stepBackHandler, loading }) {
         <Radio
           name="applicantForm"
           label="Basic applicant form"
-          value="Basic"
+          value="basic"
           onChange={handleChange}
           fontWeight="900"
-          checked={value === "Basic"}
+          checked={value === "basic"}
           border="1px solid #D3D3D3"
           paddingX="20px"
           paddingY="15px"
