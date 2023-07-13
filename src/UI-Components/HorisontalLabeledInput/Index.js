@@ -10,6 +10,7 @@ const HorisontalLabeledInput = ({
   validationMessage,
   width,
   type,
+  disabled,
 }) => {
   return (
     <Pane
@@ -33,6 +34,7 @@ const HorisontalLabeledInput = ({
         type={type}
         marginBottom="0px"
         width="60%"
+        disabled={disabled}
       />
     </Pane>
   );
