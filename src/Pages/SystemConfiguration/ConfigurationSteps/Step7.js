@@ -7,8 +7,8 @@ import {
   Spinner,
   NewGridItemIcon,
   Radio,
-  Label,
   TextInputField,
+  SelectField,
 } from "evergreen-ui";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +25,11 @@ import HorisontalLabeledSelect from "../../../UI-Components/HorisontalLabeledSel
 
 const validationSchema = yup.object().shape({
   order: yup.string().required("This field is required"),
+  maxLevel: yup
+    .number()
+    .max(50, "Maximum number is 50")
+    .min(1, "Minimum number is 1")
+    .required("This field is required"),
   name: yup
     .string()
     .min(5, "Minimum five characters")
@@ -68,6 +73,7 @@ function Step7({ stepBackHandler }) {
   const [isAddingDepartment, setIsAddingDepartment] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [touched, setTouched] = useState(false);
+  const [levelsList, setLevelsList] = useState([{ id: 1, selected: false }]);
 
   const dispatch = useDispatch();
 
@@ -83,14 +89,6 @@ function Step7({ stepBackHandler }) {
       dispatch(getEmployees());
     }
   }, [dispatch, status]);
-
-  // useEffect(() => {
-  //   if (managers && !formik.values.manager)
-  //     formik.setFieldValue("manager", "none");
-
-  //   if (excutives && !formik.values.excutive)
-  //     formik.setFieldValue("excutive", "none");
-  // }, [excutives, formik, managers]);
 
   if (status === "idle" || status === "loading") {
     return (
@@ -188,6 +186,7 @@ function Step7({ stepBackHandler }) {
               <Formik
                 initialValues={{
                   order: "ascending",
+                  maxLevel: 1,
                   name: "",
                   manager: "",
                   excutive: "",
@@ -215,81 +214,127 @@ function Step7({ stepBackHandler }) {
                     handleChange(e);
                   };
 
+                  const handleChangeMaxLevel = (e) => {
+                    if (e.target.value) {
+                      const newValue = Number(e.target.value);
+                      let newLevelsList = [...levelsList];
+
+                      if (newValue > values.maxLevel) {
+                        for (let i = values.maxLevel + 1; i <= newValue; i++) {
+                          newLevelsList.push({ id: i, selected: false });
+                        }
+                      } else {
+                        newLevelsList = newLevelsList.filter(
+                          (l) => l.id <= newValue
+                        );
+
+                        setFieldValue(
+                          "levels",
+                          values.levels.filter((l) => l.id <= newValue)
+                        );
+                      }
+
+                      setLevelsList(newLevelsList);
+                      handleChange(e);
+                    }
+                  };
+
+                  console.log(values);
+                  console.log(levelsList);
                   return (
                     <>
                       <Form>
                         {currentStep === 1 ? (
-                          <Pane
-                            aria-label="Radio Group Heirarchry levels"
-                            role="group"
-                          >
-                            <Radio
-                              name="order"
-                              label="Ascending Heirarchry levels"
-                              value="ascending"
-                              onChange={() =>
-                                setFieldValue("order", "ascending")
-                              }
-                              fontWeight="900"
-                              checked={values.order === "ascending"}
-                            />
+                          <Pane>
                             <Pane
-                              width="80%"
-                              paddingX="15px"
-                              paddingY="15px"
-                              marginY="10px"
-                              backgroundColor="white"
+                              aria-label="Radio Group Heirarchry levels"
+                              role="group"
                             >
+                              <Radio
+                                name="order"
+                                label="Ascending Heirarchry levels"
+                                value="ascending"
+                                onChange={() =>
+                                  setFieldValue("order", "ascending")
+                                }
+                                fontWeight="900"
+                                checked={values.order === "ascending"}
+                              />
                               <Pane
-                                display="flex"
-                                justifyContent="space-between"
-                                marginY="5px"
+                                width="80%"
+                                paddingX="15px"
+                                paddingY="15px"
+                                marginY="10px"
+                                backgroundColor="white"
                               >
-                                <Pane display="flex" flexDirection="column">
-                                  <Text>Level 1</Text>
-                                  <Text>Level 2</Text>
-                                  <Text>Level 3</Text>
+                                <Pane
+                                  display="flex"
+                                  justifyContent="space-between"
+                                  marginY="5px"
+                                >
+                                  <Pane display="flex" flexDirection="column">
+                                    <Text>Level 1</Text>
+                                    <Text>Level 2</Text>
+                                    <Text>Level 3</Text>
+                                  </Pane>
+                                  <Pane display="flex" flexDirection="column">
+                                    <Text>Department manager</Text>
+                                    <Text>Team Leader</Text>
+                                    <Text>Jr developer</Text>
+                                  </Pane>
                                 </Pane>
-                                <Pane display="flex" flexDirection="column">
-                                  <Text>Department manager</Text>
-                                  <Text>Team Leader</Text>
-                                  <Text>Jr developer</Text>
+                              </Pane>
+                              <Radio
+                                name="order"
+                                label="Descending Heirarchry levels"
+                                value="descending"
+                                onChange={() =>
+                                  setFieldValue("order", "descending")
+                                }
+                                checked={values.order === "descending"}
+                              />
+                              <Pane
+                                width="80%"
+                                paddingX="15px"
+                                paddingY="15px"
+                                marginY="10px"
+                                backgroundColor="white"
+                              >
+                                <Pane
+                                  display="flex"
+                                  justifyContent="space-between"
+                                  marginY="5px"
+                                >
+                                  <Pane display="flex" flexDirection="column">
+                                    <Text>Level 3</Text>
+                                    <Text>Level 2</Text>
+                                    <Text>Level 1</Text>
+                                  </Pane>
+                                  <Pane display="flex" flexDirection="column">
+                                    <Text>Department manager</Text>
+                                    <Text>Team Leader</Text>
+                                    <Text>Jr developer</Text>
+                                  </Pane>
                                 </Pane>
                               </Pane>
                             </Pane>
-                            <Radio
-                              name="order"
-                              label="Descending Heirarchry levels"
-                              value="descending"
-                              onChange={() =>
-                                setFieldValue("order", "descending")
+
+                            <TextInputField
+                              label="Maximum level number"
+                              name="maxLevel"
+                              value={values.maxLevel}
+                              isInvalid={
+                                formikTouched.maxLevel &&
+                                Boolean(errors.maxLevel)
                               }
-                              checked={values.order === "descending"}
+                              validationMessage={
+                                formikTouched.maxLevel && errors.maxLevel
+                              }
+                              onChange={handleChangeMaxLevel}
+                              type="number"
+                              max={100}
+                              min={1}
                             />
-                            <Pane
-                              width="80%"
-                              paddingX="15px"
-                              paddingY="15px"
-                              marginY="10px"
-                              backgroundColor="white"
-                            >
-                              <Pane
-                                display="flex"
-                                justifyContent="space-between"
-                                marginY="5px"
-                              >
-                                <Pane display="flex" flexDirection="column">
-                                  <Text>Level 3</Text>
-                                  <Text>Level 2</Text>
-                                  <Text>Level 1</Text>
-                                </Pane>
-                                <Pane display="flex" flexDirection="column">
-                                  <Text>Department manager</Text>
-                                  <Text>Team Leader</Text>
-                                  <Text>Jr developer</Text>
-                                </Pane>
-                              </Pane>
-                            </Pane>
                           </Pane>
                         ) : (
                           <Pane>
@@ -373,9 +418,48 @@ function Step7({ stepBackHandler }) {
                                             justifyContent="space-between"
                                             marginBottom="20px"
                                           >
-                                            <Label marginTop="8px">
-                                              {lvl.name}
-                                            </Label>
+                                            <SelectField
+                                              name={`levels.${index}.id`}
+                                              value={lvl.id}
+                                              label=""
+                                              onChange={(e) => {
+                                                const selected =
+                                                  levelsList.find(
+                                                    (l) =>
+                                                      l.id ===
+                                                      Number(e.target.value)
+                                                  ).selected;
+                                                if (!selected) {
+                                                  const currentValue = lvl.id;
+                                                  setLevelsList((prev) =>
+                                                    prev.map((l) =>
+                                                      l.id ===
+                                                      Number(e.target.value)
+                                                        ? {
+                                                            id: l.id,
+                                                            selected: true,
+                                                          }
+                                                        : l.id === currentValue
+                                                        ? {
+                                                            id: l.id,
+                                                            selected: false,
+                                                          }
+                                                        : l
+                                                    )
+                                                  );
+                                                  setFieldValue(
+                                                    `levels.${index}.id`,
+                                                    Number(e.target.value)
+                                                  );
+                                                }
+                                              }}
+                                            >
+                                              {levelsList.map((l) => (
+                                                <option key={l.id} value={l.id}>
+                                                  level {l.id}
+                                                </option>
+                                              ))}
+                                            </SelectField>
 
                                             <FieldArray
                                               name={`levels.${index}.titles`}
@@ -425,11 +509,9 @@ function Step7({ stepBackHandler }) {
                                                           onClick={() => {
                                                             if (
                                                               i === 0 &&
-                                                              (index <
-                                                                values.levels
-                                                                  .length -
-                                                                  1 ||
-                                                                index === 0)
+                                                              index === 0 &&
+                                                              values.levels
+                                                                .length === 1
                                                             )
                                                               return;
 
@@ -437,23 +519,30 @@ function Step7({ stepBackHandler }) {
                                                               i
                                                             );
 
-                                                            if (
-                                                              index ===
-                                                                values.levels
-                                                                  .length -
-                                                                  1 &&
-                                                              i === 0
-                                                            )
+                                                            if (i === 0) {
                                                               setFieldValue(
                                                                 "levels",
                                                                 values.levels.filter(
-                                                                  (lvl) =>
-                                                                    lvl.name !==
-                                                                    `Level ${
-                                                                      index + 1
-                                                                    }`
+                                                                  (level) =>
+                                                                    level.id !==
+                                                                    lvl.id
                                                                 )
                                                               );
+
+                                                              setLevelsList(
+                                                                (prev) =>
+                                                                  prev.map(
+                                                                    (l) =>
+                                                                      l.id ===
+                                                                      lvl.id
+                                                                        ? {
+                                                                            ...l,
+                                                                            selected: false,
+                                                                          }
+                                                                        : l
+                                                                  )
+                                                              );
+                                                            }
                                                           }}
                                                           marginTop="8px"
                                                         >
@@ -485,14 +574,34 @@ function Step7({ stepBackHandler }) {
                                         marginTop="20px"
                                       >
                                         <Button
-                                          onClick={() =>
-                                            arrayHelpers.push({
-                                              name: `Level ${
-                                                values.levels.length + 1
-                                              }`,
-                                              titles: [""],
-                                            })
-                                          }
+                                          onClick={() => {
+                                            if (
+                                              levelsList.length !==
+                                              values.levels.length
+                                            ) {
+                                              function getId(list) {
+                                                return list.find(
+                                                  (l) => !l.selected
+                                                ).id;
+                                              }
+                                              const lvlId = getId(levelsList);
+                                              arrayHelpers.push({
+                                                id: lvlId,
+                                                titles: [""],
+                                              });
+
+                                              setLevelsList((prev) =>
+                                                prev.map((l) =>
+                                                  l.id === lvlId
+                                                    ? {
+                                                        id: l.id,
+                                                        selected: true,
+                                                      }
+                                                    : l
+                                                )
+                                              );
+                                            }
+                                          }}
                                           type="button"
                                           appearance="main"
                                           paddingY="10px"
