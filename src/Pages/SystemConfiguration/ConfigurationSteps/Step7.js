@@ -239,8 +239,7 @@ function Step7({ stepBackHandler }) {
                     }
                   };
 
-                  console.log(values);
-                  console.log(levelsList);
+                  // console.log(values);
                   return (
                     <>
                       <Form>
