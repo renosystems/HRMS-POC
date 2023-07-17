@@ -12,7 +12,7 @@ import Step3 from "./ConfigurationSteps/Step3";
 import Step4 from "./ConfigurationSteps/Step4";
 import Step5 from "./ConfigurationSteps/Step5";
 import Step6 from "./ConfigurationSteps/Step6";
-import Step7 from "./ConfigurationSteps/Step7";
+import Step7 from "./ConfigurationSteps/Step7/Index";
 import { Navigate } from "react-router";
 
 /**
