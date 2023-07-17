@@ -454,7 +454,16 @@ function Step7({ stepBackHandler }) {
                                               }}
                                             >
                                               {levelsList.map((l) => (
-                                                <option key={l.id} value={l.id}>
+                                                <option
+                                                  key={l.id}
+                                                  value={l.id}
+                                                  disabled={l.selected}
+                                                  style={{
+                                                    backgroundColor: l.selected
+                                                      ? "#edeff5"
+                                                      : "white",
+                                                  }}
+                                                >
                                                   level {l.id}
                                                 </option>
                                               ))}
