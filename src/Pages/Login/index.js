@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Text, Pane, TextInputField, Button, Checkbox } from "evergreen-ui";
 import { useTranslation } from "react-i18next";
 import { useLocation, Navigate } from "react-router-dom";
@@ -18,6 +19,7 @@ const validationSchema = yup.object().shape({
 function Login() {
   const { t } = useTranslation();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [touched, setTouched] = useState(false);
   const [checked, setChecked] = useState(false);
   const { authenticated, status, error } = useSelector((state) => state.auth);
@@ -50,7 +52,14 @@ function Login() {
 
   if (authenticated) {
     // If the user is already logged in, redirect to the original route
-    const { from } = location.state || { from: { pathname: "/" } };
+    const { from } = location.state || {
+      from: {
+        pathname: searchParams.get("redirect")
+          ? searchParams.get("redirect")
+          : "/",
+      },
+    };
+
     return <Navigate to={from} replace={true} />;
   }
 
