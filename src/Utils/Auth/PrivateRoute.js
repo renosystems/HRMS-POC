@@ -9,7 +9,7 @@ function PrivateRoute() {
   const { pathname } = useLocation();
 
   if (!authenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={`/login?redirect=${pathname}`} replace />;
   }
 
   if (pathname === "/system-configuration")
