@@ -6,6 +6,7 @@ import {
   ArrowLeftIcon,
   TextInput,
 } from "evergreen-ui";
+import DropdownOptions from "../../../../../UI-Components/DropdownOptions/DropdownOptions";
 import { useAddNewDatasourceMutation } from "../../../../../Utils/RTK/slices/datasourceApiSlice.slice";
 
 const CreateListHeadline = ({ closeCreateList }) => {
@@ -93,25 +94,30 @@ const CreateList = ({ closeCreateList }) => {
   return (
     <Pane>
       <CreateListHeadline closeCreateList={closeCreateList} />
-      <Pane display="flex" flexDirection="column" alignItems="center">
+      <Pane display="flex" flexDirection="column" paddingX={10} paddingY={20}>
         <TextInput
           label="List Name"
           onChange={(e) => setListName(e.target.value)}
           value={listName}
           fullWidth
+          marginBottom={errorMessages?.listName ? 5 : 20}
         />
 
         {errorMessages?.listName && (
-          <Pane paddingY={10}>{errorMessages?.listName}</Pane>
+          <Pane paddingY={5} marginBottom={20} color="red">
+            {errorMessages?.listName}
+          </Pane>
         )}
 
-        {/* <DropdownOptions
+        <DropdownOptions
           options={options}
           setOptions={setOptions}
           fullWidth={true}
-        /> */}
+        />
         {errorMessages.options && (
-          <Pane paddingY={10}>{errorMessages.options}</Pane>
+          <Pane paddingY={5} color="red">
+            {errorMessages.options}
+          </Pane>
         )}
 
         <Pane display="flex" justifyContent="space-between" alignItems="center">
