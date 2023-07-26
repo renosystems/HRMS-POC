@@ -3,6 +3,7 @@ import { useDataSourceContext } from "../../../Utils/Context/DataSourceContext";
 import { LIST_TAB, FIELD_TAB } from "../../../Utils/constants";
 import FieldTab from "./FieldTab";
 import ListTab from "./ListTab";
+import EditList from "./ListTab/EditList";
 
 const DataManagementSidebar = () => {
   const { listToEdit, currentTab, setCurrentTab, setListToEdit } =
@@ -40,7 +41,7 @@ const DataManagementSidebar = () => {
         </Tab>
       </Tablist>
       {listToEdit ? (
-        "edit list"
+        <EditList />
       ) : currentTab === LIST_TAB ? (
         <ListTab />
       ) : (

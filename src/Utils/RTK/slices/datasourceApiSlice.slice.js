@@ -25,7 +25,7 @@ export const dataSourcesApiSlice = createApi({
       query: (dataSource) => ({
         url: `/data-source/${dataSource.id}`,
         method: "PATCH",
-        body: dataSource,
+        body: dataSource.data,
       }),
       invalidatesTags: ["Datasources"],
     }),
