@@ -4,14 +4,14 @@ import {
   Pane,
   Checkbox,
   Spinner,
-  Button,
-  Menu,
-  MenuItem,
+  // Button,
+  // Menu,
+  // MenuItem,
   TextInput,
   Paragraph,
-  EditIcon,
-  DeleteIcon,
-  MenuIcon,
+  // EditIcon,
+  // DeleteIcon,
+  // MenuIcon,
 } from "evergreen-ui";
 
 // const ActionsMenu = ({
@@ -66,7 +66,7 @@ import {
 
 const ItemCard = ({ item }) => {
   const [isEdit, setIsEdit] = useState(false);
-  const [anchorElActions, setAnchorElActions] = useState(null);
+  // const [anchorElActions, setAnchorElActions] = useState(null);
 
   const onEditField = (e) => {
     if (!e.target.value) return setIsEdit(false);
@@ -79,13 +79,13 @@ const ItemCard = ({ item }) => {
     }
   };
 
-  const handleOpenActionsMenu = (e) => {
-    setAnchorElActions(e.currentTarget);
-  };
+  // const handleOpenActionsMenu = (e) => {
+  //   setAnchorElActions(e.currentTarget);
+  // };
 
-  const handleCloseActionsMenu = () => {
-    setAnchorElActions(null);
-  };
+  // const handleCloseActionsMenu = () => {
+  //   setAnchorElActions(null);
+  // };
 
   return (
     <Pane
