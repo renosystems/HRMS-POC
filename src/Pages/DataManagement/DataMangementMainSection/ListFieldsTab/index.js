@@ -1,72 +1,26 @@
 import { useState } from "react";
-import { useGetFieldsQuery } from "../../../../Utils/RTK/slices/fieldsApi.slice.js";
+import {
+  useDeleteFieldMutation,
+  useGetFieldsQuery,
+} from "../../../../Utils/RTK/slices/fieldsApi.slice.js";
 import {
   Pane,
   Checkbox,
   Spinner,
-  // Button,
-  // Menu,
-  // MenuItem,
   TextInput,
   Paragraph,
-  // EditIcon,
-  // DeleteIcon,
-  // MenuIcon,
+  MoreIcon,
+  TrashIcon,
+  Menu,
+  EditIcon,
+  Popover,
+  Position,
 } from "evergreen-ui";
-
-// const ActionsMenu = ({
-//   anchorElActions,
-//   handleCloseActionsMenu,
-//   handleDeleteField,
-// }) => {
-//   const onEditField = (e) => {
-//     console.log(e.target.value);
-//   };
-
-//   return (
-//     <Menu
-//       id="menu-appbar"
-//       anchorEl={anchorElActions}
-//       open={Boolean(anchorElActions)}
-//       onClose={handleCloseActionsMenu}
-//       anchorOrigin={{
-//         vertical: "bottom",
-//         horizontal: "left",
-//       }}
-//       keepMounted
-//       transformOrigin={{
-//         vertical: "top",
-//         horizontal: "center",
-//       }}
-//     >
-//       <MenuItem
-//         onClick={() => {
-//           handleDeleteField();
-//           handleCloseActionsMenu();
-//         }}
-//       >
-//         <FlexBetweenBox>
-//           <IconButton>
-//             <DeleteIcon sx={{ color: "error.main" }} />
-//           </IconButton>
-//           <Typography variant="inherit">Delete</Typography>
-//         </FlexBetweenBox>
-//       </MenuItem>
-//       <MenuItem onClick={onEditField}>
-//         <FlexBetweenBox>
-//           <IconButton>
-//             <EditIcon sx={{ color: "grey.500" }} />
-//           </IconButton>
-//           <Typography variant="inherit">Edit</Typography>
-//         </FlexBetweenBox>
-//       </MenuItem>
-//     </Menu>
-//   );
-// };
 
 const ItemCard = ({ item }) => {
   const [isEdit, setIsEdit] = useState(false);
-  // const [anchorElActions, setAnchorElActions] = useState(null);
+
+  const [deleteField, { isLoading: isDeleting }] = useDeleteFieldMutation();
 
   const onEditField = (e) => {
     if (!e.target.value) return setIsEdit(false);
@@ -78,14 +32,6 @@ const ItemCard = ({ item }) => {
       setIsEdit(false);
     }
   };
-
-  // const handleOpenActionsMenu = (e) => {
-  //   setAnchorElActions(e.currentTarget);
-  // };
-
-  // const handleCloseActionsMenu = () => {
-  //   setAnchorElActions(null);
-  // };
 
   return (
     <Pane
@@ -121,6 +67,32 @@ const ItemCard = ({ item }) => {
           handleCloseActionsMenu={handleCloseActionsMenu}
           handleDeleteField={() => handleDeleteField(colId, item?.id)}
         /> */}
+        <Popover
+          position={Position.BOTTOM_RIGHT}
+          content={
+            <Menu>
+              <Menu.Group>
+                <Menu.Item icon={EditIcon}>Edit Field</Menu.Item>
+              </Menu.Group>
+              <Menu.Divider />
+              <Menu.Group>
+                {isDeleting ? (
+                  <Spinner />
+                ) : (
+                  <Menu.Item
+                    icon={TrashIcon}
+                    intent="danger"
+                    onClick={() => deleteField(item.id).unwrap()}
+                  >
+                    Delete Field
+                  </Menu.Item>
+                )}
+              </Menu.Group>
+            </Menu>
+          }
+        >
+          <MoreIcon marginRight={16} cursor="pointer"></MoreIcon>
+        </Popover>
       </Pane>
       <Pane
         display="flex"

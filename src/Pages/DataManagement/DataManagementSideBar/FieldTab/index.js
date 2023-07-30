@@ -154,7 +154,7 @@ const FieldTab = () => {
       try {
         await AddNewField(data).unwrap();
 
-        handleCloseCreateField();
+        formik.resetForm();
       } catch (err) {
         console.error("Failed to save: ", err);
       }
