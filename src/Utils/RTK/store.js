@@ -7,6 +7,7 @@ import employeesSlice from "./slices/employees.slice";
 import departmentsSlice from "./slices/departments.slice";
 import { fieldsApiSlice } from "./slices/fieldsApi.slice";
 import { dataSourcesApiSlice } from "./slices/datasourceApiSlice.slice";
+import { formApiSlice } from "./slices/formApi.slice";
 
 export const store = configureStore({
   reducer: {
@@ -19,11 +20,13 @@ export const store = configureStore({
     [departmentApiSlice.reducerPath]: departmentApiSlice.reducer,
     [fieldsApiSlice.reducerPath]: fieldsApiSlice.reducer,
     [dataSourcesApiSlice.reducerPath]: dataSourcesApiSlice.reducer,
+    [formApiSlice.reducerPath]: formApiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       departmentApiSlice.middleware,
       fieldsApiSlice.middleware,
-      dataSourcesApiSlice.middleware
+      dataSourcesApiSlice.middleware,
+      formApiSlice.middleware
     ),
 });
