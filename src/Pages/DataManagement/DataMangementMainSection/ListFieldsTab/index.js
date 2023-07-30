@@ -159,9 +159,9 @@ const ListFieldsTab = () => {
         <Paragraph color="red">Something went wrong</Paragraph>
       ) : (
         <Pane paddingY={20} paddingX={20}>
-          <Pane display="flex">
+          <Pane display="flex" flexWrap="wrap" width="100%">
             {fields?.map((field) => (
-              <Pane>
+              <Pane key={field.id} marginX={10} marginY={10}>
                 <ItemCard key={field?.id} item={field} />
               </Pane>
             ))}

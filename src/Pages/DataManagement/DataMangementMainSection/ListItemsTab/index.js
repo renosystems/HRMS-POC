@@ -15,8 +15,8 @@ const ItemRow = ({ item }) => {
       display="flex"
       justifyContent="space-between"
       cursor="pointer"
-      paddningX={10}
-      paddningY={10}
+      paddingX={10}
+      paddingY={10}
       marginTop={10}
       border="1px solid grey"
       borderLeft="5px solid grey"
