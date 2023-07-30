@@ -28,14 +28,14 @@ const Forms = () => {
       console.log(err);
     }
 
-    await AddNewForm({
+    const res = await AddNewForm({
       name: formName,
     }).unwrap();
 
     setFormName("");
     close();
 
-    // navigate(`/forms/draft/${data?.id}`);
+    navigate(`/forms/${res?.id}`);
   };
 
   const handleOpenCreateForm = () => {
