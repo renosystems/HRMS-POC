@@ -55,18 +55,8 @@ const ItemCard = ({ item }) => {
           ) : (
             <Paragraph>{item?.name}</Paragraph>
           )}
-          {/* <IconButton onClick={() => setIsEdit((prev) => !prev)}>
-						<EditIcon sx={{ color: 'grey.500' }} />
-					</IconButton> */}
         </Pane>
-        {/* <IconButton onClick={handleOpenActionsMenu}>
-					<MoreHorizIcon sx={{ color: 'grey.500' }} />
-				</IconButton> */}
-        {/* <ActionsMenu
-          anchorElActions={anchorElActions}
-          handleCloseActionsMenu={handleCloseActionsMenu}
-          handleDeleteField={() => handleDeleteField(colId, item?.id)}
-        /> */}
+
         <Popover
           position={Position.BOTTOM_RIGHT}
           content={
@@ -103,17 +93,9 @@ const ItemCard = ({ item }) => {
         border="1px solid grey"
       >
         <span>{item?.type}</span>
-        {/* <ExpandMoreIcon
-          sx={{
-            color: "grey.500",
-          }}
-        /> */}
       </Pane>
       <Pane display="flex" justifyContent="flex-end" alignItems="center">
-        <Checkbox
-          size="small"
-          // checked={item?.required}
-        />
+        <Checkbox size="small" checked={item?.required} />
         <span>required</span>
       </Pane>
     </Pane>
