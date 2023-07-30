@@ -5,7 +5,7 @@ const FormCard = ({ form }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`/forms/${form?.status}/${form?.id}`);
+    navigate(`/forms/${form?.id}`);
   };
 
   return (
