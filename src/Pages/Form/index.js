@@ -69,7 +69,7 @@ const Form = () => {
               <Heading>{form?.name}</Heading>
             </Pane>
             <Pane display="flex">
-              {["archived", "published"].includes(form.status) && (
+              {!["archived", "published"].includes(form.status) && (
                 <Button onClick={handleAddNewStep}>Add Step</Button>
               )}
 
@@ -92,7 +92,7 @@ const Form = () => {
                       : handleArchieveForm
                   }
                 >
-                  {form.status !== "published" ? "Publish" : "Archieve"}
+                  {form.status !== "published" ? "Publish" : "Archive"}
                 </Button>
               )}
             </Pane>
