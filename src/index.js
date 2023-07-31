@@ -12,12 +12,14 @@ import { getTheme } from "./Utils/Themes/Themes";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Provider store={store}>
-    <I18nextProvider i18n={i18n}>
-      {/* The theme id to be fetched from user profile/settings or whatever structure provided by BE in future */}
-      <ThemeProvider value={getTheme("default")}>
-        <App />
-      </ThemeProvider>
-    </I18nextProvider>
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <I18nextProvider i18n={i18n}>
+        {/* The theme id to be fetched from user profile/settings or whatever structure provided by BE in future */}
+        <ThemeProvider value={getTheme("default")}>
+          <App />
+        </ThemeProvider>
+      </I18nextProvider>
+    </Provider>
+  </React.StrictMode>
 );
