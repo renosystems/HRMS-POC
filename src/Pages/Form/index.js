@@ -36,13 +36,21 @@ const Form = () => {
   };
 
   const handlePublishForm = async () => {
-    await publishForm(id).unwrap();
-    navigate(`/forms`);
+    try {
+      await publishForm(id).unwrap();
+      navigate(`/forms`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleArchieveForm = async () => {
-    await archiveForm(id).unwrap();
-    navigate(`/forms`);
+    try {
+      await archiveForm(id).unwrap();
+      navigate(`/forms`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
